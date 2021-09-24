@@ -5,12 +5,12 @@
            width="25"/>
       <p class="title"><strong>ACoin</strong></p>
 
-      <el-select v-model="modelSelect" class="selectModel" @change="update">
-        <el-option v-for="item in modelOptions"
-                   :key="item.value"
-                   :label="item.label"
-                   :value="item.label"></el-option>
-      </el-select>
+<!--      <el-select v-model="modelSelect" class="selectModel" @change="update">-->
+<!--        <el-option v-for="item in modelOptions"-->
+<!--                   :key="item.value"-->
+<!--                   :label="item.label"-->
+<!--                   :value="item.label"></el-option>-->
+<!--      </el-select>-->
 
       <div class="option-button-area" v-show="fullWidth">
         <el-popover
@@ -170,7 +170,6 @@
 <script>
   import FloatingWindow from './Components/floatingWindow'
   import ForceMap from './Models/ForceMap'
-  import TypeSetting from './Models/TypeSetting'
   import html2canvas from "html2canvas";
   import FileSaver from "file-saver";
   import Avatar from "./Components/Avatar";
@@ -197,8 +196,7 @@
     components: {
       Avatar,
       FloatingWindow,
-      ForceMap,
-      TypeSetting,
+      ForceMap
     },
     computed: {
       ...mapGetters([
@@ -239,11 +237,11 @@
         top: 0,
         left: 0,
         modelSelect: '力导图模式',
-        modelOptions: [{
-          value: '1', label: '力导图模式'
-        }, {
-          value: '2', label: '排版模式'
-        }],
+        // modelOptions: [{
+        //   value: '1', label: '力导图模式'
+        // }, {
+        //   value: '2', label: '排版模式'
+        // }],
         fullWidth: true,
         dataUrl: '',
         timer: '',

@@ -35,35 +35,35 @@
 
     <div>
       <div class="buttonHolder">
-        <el-button id="btn_P" class="btn_PublicGraph" @click="PublicGraph"></el-button>
-        <div id="Name_P" style="float: left; font-size: 10px;height: 15px;margin-left: 5px;color: #f3f6fd;"
-             v-model="bolPublicGraph"><strong>公共图谱</strong></div>
-        <el-button id="btn_W" class="btn_Warehouse" @click="Warehouse"></el-button>
+<!--        <el-button id="btn_P" class="btn_PublicGraph" @click="PublicGraph"></el-button>-->
+<!--        <div id="Name_P" style="float: left; font-size: 10px;height: 15px;margin-left: 5px;color: #f3f6fd;"-->
+<!--             v-model="bolPublicGraph"><strong>公共图谱</strong></div>-->
+        <el-button id="btn_W" class="btn_Warehouse" ></el-button>
         <div id="Name_W" style="float: left; font-size: 10px;height: 15px;margin-left: 5px" v-model="bolPublicGraph">
           <strong>个人仓库</strong></div>
         <!--        <a href="#" class="button1 tick" style="margin-top: 20px"></a>-->
         <a href="#" class="button1 tick1" style="margin-top: 20px" v-show="this.Modal==='Warehouse'"
            @click="CreateChartVisible=true"></a>
-        <a href="#" class="button1 tick2" style="margin-top: 20px" v-show="this.Modal==='publicGraph'"
-           @click="set_stockCardVisible(true)"></a>
+<!--        <a href="#" class="button1 tick2" style="margin-top: 20px" v-show="this.Modal==='publicGraph'"-->
+<!--           @click="set_stockCardVisible(true)"></a>-->
       </div>
 
       <div class="leftSidePart">
-        <div class="PublicMode" v-show="this.Modal==='publicGraph'">
-          <div>
-            <div class="PublicGraph">
-              <FourGraphs v-if="updateFour" :refreshSelf="refreshFour"></FourGraphs>
-            </div>
-          </div>
-          <div style="margin-left: 940px">
-            <div class="recommend">
-              <stock-card v-if="stock_card_update" class="recommend_items" :refreshSelf="refreshStockCard"></stock-card>
-            </div>
-            <div class="chatBot">
-              <ChatLog></ChatLog>
-            </div>
-          </div>
-        </div>
+<!--        <div class="PublicMode" v-show="this.Modal==='publicGraph'">-->
+<!--          <div>-->
+<!--            <div class="PublicGraph">-->
+<!--              <FourGraphs v-if="updateFour" :refreshSelf="refreshFour"></FourGraphs>-->
+<!--            </div>-->
+<!--          </div>-->
+<!--          <div style="margin-left: 940px">-->
+<!--            <div class="recommend">-->
+<!--              <stock-card v-if="stock_card_update" class="recommend_items" :refreshSelf="refreshStockCard"></stock-card>-->
+<!--            </div>-->
+<!--            <div class="chatBot">-->
+<!--              <ChatLog></ChatLog>-->
+<!--            </div>-->
+<!--          </div>-->
+<!--        </div>-->
 
         <div class="body" v-show="this.Modal==='Warehouse'">
           <GraphCard v-if="update" style="margin-top: 15px;margin-bottom: 20px;" ref="GraphCard"></GraphCard>
@@ -79,18 +79,12 @@
 import {mapGetters, mapMutations, mapActions} from 'vuex'
 import Avatar from '../Graphs/Components/Avatar'
 import GraphCard from './graphCard'
-import ChatLog from './Components/ChatLog'
-import stockCard from "./stockCard";
-import FourGraphs from './Components/FourGraphs'
 
 export default {
   name: "home",
   components: {
     Avatar,
-    GraphCard,
-    ChatLog,
-    stockCard,
-    FourGraphs
+    GraphCard
   },
   computed: {
     ...mapGetters([
@@ -110,14 +104,13 @@ export default {
       bolPublicGraph: true,
       searchInput: '',
       clearSearch: '',
-      Modal: 'publicGraph',
+      Modal: 'Warehouse',
 
       CreateChartVisible: false,
       // 图谱名
       input_chart: '',
 
       update: true,
-      stock_card_update: true,
       updateFour: true,
     }
   },
@@ -126,7 +119,6 @@ export default {
       'set_userParams',
       'set_customGraphParams',
       'set_customGraphParamsClear',
-      'set_stockCardVisible',
     ]),
 
     ...mapActions([
@@ -137,35 +129,34 @@ export default {
     ]),
 
 
-    PublicGraph() {
-      if (this.bolPublicGraph === 'true') return;
-      this.Modal = 'publicGraph';
-      this.bolPublicGraph = true;
-      this.bolWarehouseBtn = false;
-      var obj1 = document.getElementById("btn_P");
-      obj1.style.cssText = 'background-image: url("https://lililizi.oss-cn-beijing.aliyuncs.com/a_%E8%BD%AF%E5%B7%A53/%E5%9B%BE%E7%89%8712.png") ;background-size:55px;margin-left: 0;margin-top:4px;height:65px;width:65px';
-      var obj2 = document.getElementById("btn_W");
-      obj2.style.cssText = 'background-image: url("https://lililizi.oss-cn-beijing.aliyuncs.com/a_%E8%BD%AF%E5%B7%A53/%E6%88%BF%E5%AD%90%20%282%29.png") ;background-size:55px;margin-left: 0;margin-top:4px;height:65px;width:65px';
-      var obj3 = document.getElementById("Name_W");
-      obj3.style.cssText = 'float: left; font-size: 10px;height: 15px;margin-left: 5px;color: #f3f6fd;';
-      var obj4 = document.getElementById("Name_P");
-      obj4.style.cssText = 'float: left; font-size: 10px;height: 15px;margin-left: 5px;color: #000000;';
-    },
-    Warehouse() {
-      if (this.bolWarehouseBtn === 'true') return;
-      this.Modal = "Warehouse";
-      this.bolWarehouseBtn = true;
-      this.bolPublicGraph = false;
-      var obj1 = document.getElementById("btn_W");
-      obj1.style.cssText = 'background-image: url("https://lililizi.oss-cn-beijing.aliyuncs.com/a_%E8%BD%AF%E5%B7%A53/%E5%9B%BE%E7%89%8711.png") ;background-size:55px;margin-left: 0;margin-top:4px;height:65px;width:65px';
-      var obj2 = document.getElementById("btn_P");
-      obj2.style.cssText = 'background-image: url("https://lililizi.oss-cn-beijing.aliyuncs.com/a_%E8%BD%AF%E5%B7%A53/%E6%95%B0%E6%8D%AE%E5%9B%BE%E8%B0%B1.png") ;background-size:55px;margin-left: 0;margin-top:4px;height:65px;width:65px';
-      var obj3 = document.getElementById("Name_P");
-      obj3.style.cssText = 'float: left; font-size: 10px;height: 15px;margin-left: 5px;color: #f3f6fd;';
-      var obj4 = document.getElementById("Name_W");
-      obj4.style.cssText = 'float: left; font-size: 10px;height: 15px;margin-left: 5px;color: #000000;';
-
-    },
+    // PublicGraph() {
+    //   if (this.bolPublicGraph === 'true') return;
+    //   this.Modal = 'publicGraph';
+    //   this.bolPublicGraph = true;
+    //   this.bolWarehouseBtn = false;
+    //   var obj1 = document.getElementById("btn_P");
+    //   obj1.style.cssText = 'background-image: url("https://lililizi.oss-cn-beijing.aliyuncs.com/a_%E8%BD%AF%E5%B7%A53/%E5%9B%BE%E7%89%8712.png") ;background-size:55px;margin-left: 0;margin-top:4px;height:65px;width:65px';
+    //   var obj2 = document.getElementById("btn_W");
+    //   obj2.style.cssText = 'background-image: url("https://lililizi.oss-cn-beijing.aliyuncs.com/a_%E8%BD%AF%E5%B7%A53/%E6%88%BF%E5%AD%90%20%282%29.png") ;background-size:55px;margin-left: 0;margin-top:4px;height:65px;width:65px';
+    //   var obj3 = document.getElementById("Name_W");
+    //   obj3.style.cssText = 'float: left; font-size: 10px;height: 15px;margin-left: 5px;color: #f3f6fd;';
+    //   var obj4 = document.getElementById("Name_P");
+    //   obj4.style.cssText = 'float: left; font-size: 10px;height: 15px;margin-left: 5px;color: #000000;';
+    // },
+    // Warehouse() {
+    //   if (this.bolWarehouseBtn === 'true') return;
+    //   this.Modal = "Warehouse";
+    //   this.bolWarehouseBtn = true;
+    //   this.bolPublicGraph = false;
+    //   var obj1 = document.getElementById("btn_W");
+    //   obj1.style.cssText = 'background-image: url("https://lililizi.oss-cn-beijing.aliyuncs.com/a_%E8%BD%AF%E5%B7%A53/%E5%9B%BE%E7%89%8711.png") ;background-size:55px;margin-left: 0;margin-top:4px;height:65px;width:65px';
+    //   var obj2 = document.getElementById("btn_P");
+    //   obj2.style.cssText = 'background-image: url("https://lililizi.oss-cn-beijing.aliyuncs.com/a_%E8%BD%AF%E5%B7%A53/%E6%95%B0%E6%8D%AE%E5%9B%BE%E8%B0%B1.png") ;background-size:55px;margin-left: 0;margin-top:4px;height:65px;width:65px';
+    //   var obj3 = document.getElementById("Name_P");
+    //   obj3.style.cssText = 'float: left; font-size: 10px;height: 15px;margin-left: 5px;color: #f3f6fd;';
+    //   var obj4 = document.getElementById("Name_W");
+    //   obj4.style.cssText = 'float: left; font-size: 10px;height: 15px;margin-left: 5px;color: #000000;';
+    // },
     searchGraph() {
       if (this.searchInput != '') {
         this.$refs.GraphCard.resetGraphList();
@@ -214,12 +205,6 @@ export default {
       })
     },
 
-    refreshStockCard() {
-      this.stock_card_update = false;
-      this.$nextTick(() => {
-        this.stock_card_update = true
-      })
-    },
 
     refreshFour() {
       console.log("refresh")
@@ -305,30 +290,30 @@ export default {
   border: 0 none;
 }
 
-.chatBot {
-  position: absolute;
-  margin-top: 160px;
-  margin-left: 16%;
-  width: 400px;
-  background-color: white;
-  border-radius: 15px;
-}
+/*.chatBot {*/
+/*  position: absolute;*/
+/*  margin-top: 160px;*/
+/*  margin-left: 16%;*/
+/*  width: 400px;*/
+/*  background-color: white;*/
+/*  border-radius: 15px;*/
+/*}*/
 
-.PublicMode {
-  width: 1550px;
-  height: 700px;
-  float: left;
-}
+/*.PublicMode {*/
+/*  width: 1550px;*/
+/*  height: 700px;*/
+/*  float: left;*/
+/*}*/
 
-.PublicGraph {
-  margin-top: 10px;
-  float: left;
-  width: 110%;
-  height: 800px;
-  background: white;
-  border-radius: 35px;
-  margin-left: 10px;
-}
+/*.PublicGraph {*/
+/*  margin-top: 10px;*/
+/*  float: left;*/
+/*  width: 110%;*/
+/*  height: 800px;*/
+/*  background: white;*/
+/*  border-radius: 35px;*/
+/*  margin-left: 10px;*/
+/*}*/
 
 .buttonHolder {
   float: left;
@@ -337,19 +322,19 @@ export default {
   margin-top: 25px;
 }
 
-.button2 {
-  background-image: -webkit-linear-gradient(top, #f4f1ee, #fff);
-  background-image: linear-gradient(top, #f4f1ee, #fff);
-  border-radius: 50%;
-  box-shadow: 0px 8px 10px 0px rgba(109, 109, 109, 0.3), inset 0px 4px 1px 1px white, inset 0px -3px 1px 1px rgba(204, 198, 197, .5);
-  float: left;
-  height: 50px;
-  margin: 0 30px 30px 0;
-  position: relative;
-  width: 50px;
-  -webkit-transition: all .1s linear;
-  transition: all .1s linear;
-}
+/*.button2 {*/
+/*  background-image: -webkit-linear-gradient(top, #f4f1ee, #fff);*/
+/*  background-image: linear-gradient(top, #f4f1ee, #fff);*/
+/*  border-radius: 50%;*/
+/*  box-shadow: 0px 8px 10px 0px rgba(109, 109, 109, 0.3), inset 0px 4px 1px 1px white, inset 0px -3px 1px 1px rgba(204, 198, 197, .5);*/
+/*  float: left;*/
+/*  height: 50px;*/
+/*  margin: 0 30px 30px 0;*/
+/*  position: relative;*/
+/*  width: 50px;*/
+/*  -webkit-transition: all .1s linear;*/
+/*  transition: all .1s linear;*/
+/*}*/
 
 .button1 {
   background-image: -webkit-linear-gradient(top, #f4f1ee, #fff);
@@ -383,11 +368,11 @@ export default {
   top: 4px;
 }
 
-.tick2:after {
-  content: "o";
-  left: 11px;
-  top: 4px;
-}
+/*.tick2:after {*/
+/*  content: "o";*/
+/*  left: 11px;*/
+/*  top: 4px;*/
+/*}*/
 
 
 .button1:hover {
@@ -401,10 +386,10 @@ export default {
   text-shadow: 0px 0px 6px rgba(0, 0, 0, 0.56);
 }
 
-.tick2:hover:after {
-  color: rgba(0, 0, 0, 0.57);
-  text-shadow: 0px 0px 6px rgba(0, 0, 0, 0.56);
-}
+/*.tick2:hover:after {*/
+/*  color: rgba(0, 0, 0, 0.57);*/
+/*  text-shadow: 0px 0px 6px rgba(0, 0, 0, 0.56);*/
+/*}*/
 
 
 .button1:active {
@@ -419,19 +404,19 @@ export default {
 }
 
 
-.btn_PublicGraph {
-  float: left;
-  background-repeat: no-repeat;
-  border: 0;
-  background-color: transparent;
-  background-image: url("https://lililizi.oss-cn-beijing.aliyuncs.com/a_%E8%BD%AF%E5%B7%A53/%E5%9B%BE%E7%89%8712.png");
-  border-style: none;
-  background-size: 55px;
-  margin-left: 0;
-  margin-top: 4px;
-  height: 65px;
-  width: 65px;
-}
+/*.btn_PublicGraph {*/
+/*  float: left;*/
+/*  background-repeat: no-repeat;*/
+/*  border: 0;*/
+/*  background-color: transparent;*/
+/*  background-image: url("https://lililizi.oss-cn-beijing.aliyuncs.com/a_%E8%BD%AF%E5%B7%A53/%E5%9B%BE%E7%89%8712.png");*/
+/*  border-style: none;*/
+/*  background-size: 55px;*/
+/*  margin-left: 0;*/
+/*  margin-top: 4px;*/
+/*  height: 65px;*/
+/*  width: 65px;*/
+/*}*/
 
 .btn_Warehouse {
   float: left;
@@ -439,7 +424,7 @@ export default {
   border: 0;
   background-color: transparent;
   border-style: none;
-  background-image: url("https://lililizi.oss-cn-beijing.aliyuncs.com/a_%E8%BD%AF%E5%B7%A53/%E6%88%BF%E5%AD%90%20%282%29.png");
+  background-image: url("https://lililizi.oss-cn-beijing.aliyuncs.com/a_%E8%BD%AF%E5%B7%A53/%E5%9B%BE%E7%89%8711.png");
   background-size: 55px;
   margin-left: 0;
   margin-top: 4px;
