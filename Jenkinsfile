@@ -16,8 +16,8 @@ pipeline {
 	        steps{
 	            echo 'Build Stage'
 	            sh "ls"
-	            sh "cd knowledgegraph && npm install --registry=https://mirrors.huaweicloud.com/repository/npm/"
-                sh "cd knowledgegraph && npm run build"
+	            sh "npm install --registry=https://mirrors.huaweicloud.com/repository/npm/"
+                sh "npm run build"
 	        }
 	    }
         stage('Image Build'){
