@@ -13,7 +13,7 @@ import * as echarts from 'echarts';
 
 Vue.prototype.$echarts = echarts
 
-axios.defaults.baseURL = process.env.NODE_ENV ==="production"? "http://localhost:8330/api":"http://121.5.118.248:8330/api"
+axios.defaults.baseURL = process.env.NODE_ENV ==="production"? "http://121.5.118.248:8330/api":"http://localhost:8330/api"
 axios.defaults
 axios.defaults.withCredentials = true
 Vue.use(VueAxios, axios);
