@@ -30,7 +30,7 @@ pipeline {
         stage('Deploy'){
             agent any
             steps{
-                sh "docker run -p 8080:8080 --name frontend-so -v /log:/log -d frontend-so:${BUILD_ID}"
+                sh "docker run -p 8000:8000 --name frontend-so -v /log:/log -d frontend-so:${BUILD_ID}"
             }
         }
     }
