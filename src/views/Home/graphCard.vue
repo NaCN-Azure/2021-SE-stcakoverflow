@@ -3,7 +3,7 @@
     <el-row>
       <el-col :span="4.9" v-for="(o, index) in divideGraphList.length" :key="o"
               :offset="index > 0 ? divideGraphList.length : 0" class="col">
-        <el-card :body-style="{ padding: '0px' }" class="cards">
+        <el-card :body-style="{ padding: '0px' }" class="cards" @click.native="setNum(index)">
           <div :id="idSelect(index)"></div>
           <el-image
             class="image"
@@ -85,6 +85,16 @@
 
         editGraphVisible: false,
 
+        num:'',
+
+        GraphTime:'',
+
+        GraphisFavored:'',
+
+        GraphUrl:'',
+
+        GraphName:'',
+
       }
     },
     computed: {
@@ -116,6 +126,14 @@
         console.log(this.userGraphList)
       },
 
+      setNum(index){
+        this.num=this.userGraphList[index].id;
+        this.GraphTime=this.userGraphList[index].time;
+        this.GraphisFavored=this.userGraphList[index].isFavored;
+        this.GraphUrl=this.userGraphList[index].url;
+        this.GraphName=this.userGraphList[index].name;
+      },
+
       async handleCommand(index) {
         switch (index) {
           case 'delete':
@@ -123,18 +141,37 @@
             this.$parent.refreshGraph();
             break;
           case 'addStarTag':
-            this.set_customGraphParams({
+
+            console.log(this.userGraphList[index]);
+            var newGraph={
+              id : this.num,
+              name:this.GraphName,
+              url:this.GraphUrl,
+              time:this.GraphTime,
+              isRelationLabelVisible : true,
+              isNodeLabelVisible : true,
               isFavored: true,
               favored: true
-            });
+            };
+
+            this.set_customGraphParams(newGraph);
             await this.editGraph();
             this.$parent.refreshGraph();
             break;
           case 'removeStarTag':
-            this.set_customGraphParams({
+
+            var newGraph={
+              id : this.num,
+              name:this.GraphName,
+              url:this.GraphUrl,
+              time:this.GraphTime,
+              isRelationLabelVisible : true,
+              isNodeLabelVisible : true,
               isFavored: false,
               favored: false
-            });
+            };
+
+            this.set_customGraphParams(newGraph);
             await this.editGraph();
             this.$parent.refreshGraph();
             break;
@@ -147,10 +184,19 @@
       },
 
       async handleEditGraphClose() {
-        this.set_customGraphParams({
+
+        var newGraph={
+          id : this.num,
           name: this.input_chart,
-        })
-        await this.editGraph()
+          url:this.GraphUrl,
+          time:this.GraphTime,
+          isRelationLabelVisible : true,
+          isNodeLabelVisible : true,
+          isFavored: this.GraphisFavored,
+        };
+
+        this.set_customGraphParams(newGraph)
+        await this.editGraph(this.set_customGraphParams)
         this.$parent.refreshGraph()
         this.input_chart = ''
       },
