@@ -13,7 +13,8 @@ import * as echarts from 'echarts';
 
 Vue.prototype.$echarts = echarts
 
-axios.defaults.baseURL = "/api"
+axios.defaults.baseURL = process.env.NODE_ENV ==="production"? '':'/api'
+axios.defaults
 axios.defaults.withCredentials = true
 Vue.use(VueAxios, axios);
 Vue.use(ElementUI);
