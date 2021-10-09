@@ -1,0 +1,6 @@
+FROM openjdk:8u262-jre-slim-buster
+ADD ./target/coin-so-2.jar /testname-coin/coin-so.jar
+ADD runboot-coin.sh testname-coin/
+WORKDIR /testname-coin/
+RUN chmod a+x runboot-coin.sh
+CMD /testname-coin/runboot-coin.sh

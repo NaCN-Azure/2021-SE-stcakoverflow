@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.user.data.AccountMapper">
+
+    <insert id="createNewAccount" parameterType="com.example.user.po.User" useGeneratedKeys="true" keyProperty="id">
+        insert into user(email,password,username,phonenumber,usertype)
+        values(#{email},#{password},#{userName},#{phoneNumber},#{userType})
+    </insert>
+    <delete id="deleteAccountByEmail">
+        delete from user where email=#{email}
+    </delete>
+
+    <delete id="deleteAccountById">
+        delete from user where id=#{id}
+    </delete>
+
+    <select id="getAccountByEmail" resultMap="User">
+        select * from user where email=#{email}
+    </select>
+    <select id="getAccountById" resultMap="User">
+        select * from user where id=#{id}
+    </select>
+    <update id="updateAccount">
+        update user
+        set password=#{password},
+        username=#{userName},
+        phonenumber=#{phoneNumber},
+        email=#{email}
+        where `id`=#{id}
+    </update>
+
+    <resultMap id="User" type="com.example.user.po.User">
+        <id column="id" property="id"/>
+        <result column="email" property="email"/>
+        <result column="password" property="password"/>
+        <result column="username" property="userName"/>
+        <result column="phonenumber" property="phoneNumber"/>
+        <result column="usertype" property="userType"/>
+    </resultMap>
+</mapper>

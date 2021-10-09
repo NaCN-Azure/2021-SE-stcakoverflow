@@ -1,0 +1,15 @@
+spring:
+  neo4j:
+    uri: bolt://localhost:7687
+    authentication:
+      username: neo4j
+      password: 123456
+
+
+eureka:
+  client:
+    serviceUrl:
+      #服务注册地址
+      defaultZone: http://localhost:5555/eureka/
+  instance:
+    prefer-ip-address: true

@@ -1,0 +1,35 @@
+#spring:
+#  application:
+#    #服务注册名称
+#    name: zuul
+#  profiles:
+#    active: dev
+
+server:
+  port: 8330
+spring:
+  application:
+    name: gateway
+  profiles:
+    active: prod
+  cloud:
+    gateway:
+      routes:
+        - id: user_route
+          uri: lb://user                        # lb代表转发后台服务使用负载均衡,users代表服务注册中心上的服务名
+          predicates:
+            - Path=/userService/**
+
+        - id: coin_route
+          uri: lb://coin-so         # lb(loadbalance)代表负载均衡转发路由
+          predicates:
+            - Path=/coinService/**
+      discovery:
+        locator:
+          enabled: true                            #开启根据服务名动态获取路由
+
+
+ribbon:
+  ReadTimeout: 12000  #请求处理的超时时间
+  ConnectTimeout: 30000  #请求连接的超时时间
+

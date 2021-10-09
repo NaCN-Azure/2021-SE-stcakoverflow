@@ -1,0 +1,6 @@
+FROM openjdk:8u262-jre-slim-buster
+ADD ./gateway/target/gateway-0.0.1-SNAPSHOT.jar /testname-coin/testname-gateway.jar
+ADD runboot-gateway.sh testname-coin/
+WORKDIR /testname-coin/
+RUN chmod a+x runboot-gateway.sh
+CMD /testname-coin/runboot-gateway.sh
