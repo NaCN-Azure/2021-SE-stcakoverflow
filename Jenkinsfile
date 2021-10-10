@@ -77,7 +77,7 @@ pipeline {
         }
         stage('Image-gateway Build'){
             steps{
-                sh "mv Dockerfile Dockerfile-kbqa"
+                sh "mv Dockerfile Dockerfile-user"
                 sh "mv Dockerfile-gateway Dockerfile"
                 echo 'Image-gateway Build Stage'
                 sh "docker build . -t testname-gateway:${BUILD_ID}"
