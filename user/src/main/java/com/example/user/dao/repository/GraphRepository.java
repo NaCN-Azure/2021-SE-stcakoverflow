@@ -1,10 +1,10 @@
-package com.ac.coin.dao.repository;
+package com.example.user.dao.repository;
 
-import com.ac.coin.po.Graph;
+//import com.ac.coin.po.Graph;
+import com.example.user.po.Graph;
 import org.springframework.data.neo4j.repository.Neo4jRepository;
 import org.springframework.data.neo4j.repository.query.Query;
 import org.springframework.data.repository.query.Param;
-import org.springframework.stereotype.Repository;
 
 import java.util.List;
 

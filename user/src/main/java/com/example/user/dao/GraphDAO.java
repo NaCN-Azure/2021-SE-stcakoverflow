@@ -1,14 +1,10 @@
-package com.ac.coin.dao;
+package com.example.user.dao;
 
-import com.ac.coin.po.Graph;
-import com.ac.coin.po.Node;
-import com.ac.coin.po.User;
-import org.mapstruct.Mapper;
-import org.springframework.data.repository.query.Param;
+//import com.ac.coin.po.Graph;
+import com.example.user.po.Graph;
 
 import java.util.List;
 import java.util.Optional;
-
 
 public interface GraphDAO {
     Long addGraph(Graph graph, Long userId);

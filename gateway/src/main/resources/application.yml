@@ -15,15 +15,19 @@ spring:
   cloud:
     gateway:
       routes:
-        - id: user_route
-          uri: lb://user                        # lb代表转发后台服务使用负载均衡,users代表服务注册中心上的服务名
+        - id: route_user
+          uri: lb://user                       # lb代表转发后台服务使用负载均衡,users代表服务注册中心上的服务名
           predicates:
             - Path=/userService/**
+          filters: #解决使用服务名无法访问的问题。
+            - StripPrefix=1
 
-        - id: coin_route
+        - id: route_coin
           uri: lb://coin-so         # lb(loadbalance)代表负载均衡转发路由
           predicates:
             - Path=/coinService/**
+          filters: #解决使用服务名无法访问的问题。
+            - StripPrefix=1
       discovery:
         locator:
           enabled: true                            #开启根据服务名动态获取路由

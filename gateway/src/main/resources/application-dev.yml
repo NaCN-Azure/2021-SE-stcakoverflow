@@ -33,7 +33,7 @@ spring:
         corsConfigurations:
           '[/**]':
             allowCredentials: true
-            allowedOrigins: "*"
+            allowedOriginPatterns: "*"
             allowedHeaders: "*"
             allowedMethods: "*"
             maxAge: 3628800

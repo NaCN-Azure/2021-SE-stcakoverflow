@@ -16,7 +16,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/user")
-@CrossOrigin
+@CrossOrigin()
 public class UserController {
     @Autowired
     private UserService userService;
@@ -87,6 +87,11 @@ public class UserController {
 //        sb.append("bcde");
         return sb.toString();
 
+    }
+
+    @GetMapping("/testUser")
+    public String TestUser(){
+        return "testUser";
     }
 
 }

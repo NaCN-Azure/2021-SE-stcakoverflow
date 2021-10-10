@@ -38,11 +38,11 @@ pipeline {
                    sh "if (docker images | grep coin-so) then (docker rmi \$(docker images coin-so -q)) fi"
             }
         }
-        stage('Image-coin-so Clear'){
+        stage('Image-user Clear'){
             steps{
                 echo 'Image-coin-so Clear Stage'
-                sh "if (docker ps -a| grep coin-so) then (docker container stop coin-so && docker container rm coin-so) fi"
-                   sh "if (docker images | grep coin-so) then (docker rmi \$(docker images coin-so -q)) fi"
+                sh "if (docker ps -a| grep testname-user) then (docker container stop testname-user && docker container rm testname-user) fi"
+                   sh "if (docker images | grep testname-user) then (docker rmi \$(docker images testname-user -q)) fi"
             }
                	    }
         stage('Image-gateway Clear'){
@@ -90,6 +90,7 @@ pipeline {
                 sh "docker run -p 7001:7001 --name coin-so -v /log:/log -dit coin-so:${BUILD_ID}"
                 sh "docker run -p 6001:6001 --name testname-user -v /log:/log -dit testname-user:${BUILD_ID}"
                 sh "docker run -p 8330:8330 --name testname-gateway -v /log:/log -dit testname-gateway:${BUILD_ID}"
+
             }
         }
     }

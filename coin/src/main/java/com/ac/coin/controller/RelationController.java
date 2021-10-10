@@ -37,4 +37,9 @@ public class RelationController {
         Optional<RelationVO> optionalRelation = relationService.find(relationId);
         return optionalRelation.map(ResponseVO::buildSuccess).orElseGet(() -> ResponseVO.buildFailure("不存在该关系"));
     }
+
+    @GetMapping("/testCoin")
+    public String TestUser(){
+        return "testCoin";
+    }
 }

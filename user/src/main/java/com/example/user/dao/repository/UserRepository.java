@@ -1,6 +1,7 @@
 package com.example.user.dao.repository;
 
-import com.ac.coin.po.User;
+//import com.ac.coin.po.User;
+import com.example.user.po.User;
 import org.springframework.data.neo4j.repository.Neo4jRepository;
 import org.springframework.data.neo4j.repository.query.Query;
 import org.springframework.data.repository.query.Param;
