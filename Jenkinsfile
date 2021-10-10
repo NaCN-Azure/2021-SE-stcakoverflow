@@ -80,7 +80,7 @@ pipeline {
                 sh "mv Dockerfile Dockerfile-kbqa"
                 sh "mv Dockerfile-gateway Dockerfile"
                 echo 'Image-gateway Build Stage'
-                sh "docker build . -t coin-gateway:${BUILD_ID}"
+                sh "docker build . -t testname-gateway:${BUILD_ID}"
             }
         }
         stage('Deploy-service'){
