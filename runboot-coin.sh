@@ -1,0 +1,1 @@
+java -Duser.timezone=Asia/Shanghai -Djava.security.egd=file:/dev/./urandom -jar /testname-coin/coin-so.jar > /log/so.log 2> /log/error_so.log
