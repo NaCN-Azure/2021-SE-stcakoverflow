@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const api = {
-  customNodePre: '/api/node'
+  customNodePre: '/coinService/api/node'
 }
 
 export function addNodeAPI(data) {

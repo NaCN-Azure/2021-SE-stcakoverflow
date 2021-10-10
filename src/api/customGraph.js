@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const api = {
-  customGraphPre: '/api/graph'
+  customGraphPre: '/coinService/api/graph'
 }
 
 export function addGraphAPI(data, userId) {
