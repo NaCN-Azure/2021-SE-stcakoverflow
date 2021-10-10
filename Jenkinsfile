@@ -40,7 +40,7 @@ pipeline {
         }
         stage('Image-user Clear'){
             steps{
-                echo 'Image-coin-so Clear Stage'
+                echo 'Image-user Clear Stage'
                 sh "if (docker ps -a| grep testname-user) then (docker container stop testname-user && docker container rm testname-user) fi"
                    sh "if (docker images | grep testname-user) then (docker rmi \$(docker images testname-user -q)) fi"
             }
