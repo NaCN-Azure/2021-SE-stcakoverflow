@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const api = {
-  customRelationPre: '/api/relation'
+  customRelationPre: '/coinService/api/relation'
 }
 
 

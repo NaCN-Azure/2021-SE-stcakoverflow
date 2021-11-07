@@ -13,12 +13,12 @@ module.exports = {
     // axios配置项，目标是跨域问题
     // localhost后的地址为后端启动的端口
     proxyTable: {
-      '/api/**':{
+      '/**':{
         target: 'http://localhost:8330/',
         changeOrigin: true,
-        pathRewrite: {
-          '^/api': '',
-        }
+        // pathRewrite: {
+        //   '^/api': '',
+        // }
       }
     },
     // Various Dev Server settings

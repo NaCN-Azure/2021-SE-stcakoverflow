@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const api = {
-  userPre: '/api/user'
+  userPre: '/userService/api/user'
 }
 
 export function userLoginInAPI(data) {
