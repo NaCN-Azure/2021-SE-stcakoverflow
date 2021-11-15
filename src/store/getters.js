@@ -39,6 +39,26 @@ const getters = {
   favourStockName: state => state.customUser.favourStockName,
   chatBotAnswer: state => state.customUser.chatBotAnswer,
   chatBotRequest: state => state.customUser.chatBotRequest,
+
+  //stackGraph
+
+  stackgraphList: state => state.stackGraph.graphList,
+  // 存放当前图谱数据信息
+  stackGraphRes: state => state.stackGraph.stackGraphRes,
+  // 存放当前图谱基本信息
+  stackGraphParams: state => state.stackGraph.stackGraphParams,
+  stackcurrentGraphId: state => state.stackGraph.currentGraphId,
+  stackcurrentGraphName: state => state.stackGraph.currentGraphName,
+  stackfile: state => state.stackGraph.file,
+  stackfuzzyMatchingOutComeList: state => state.stackGraph.fuzzyMatchingOutComeList,
+  stackshowModel: state => state.stackGraph.showModel,
+  stacksearchString: state => state.stackGraph.searchString,
+  stackgraphMovable: state => state.stackGraph.graphMovable,
+  stacksearchBoardVisible: state => state.stackGraph.searchBoardVisible,
+  stacknumericalVisible: state => state.stackGraph.numericalVisible,
+  stacknodeClickVisible: state => state.stackGraph.nodeClickVisible,
+  stackrelationClickVisible: state => state.stackGraph.relationClickVisible,
+  stackstockCardVisible: state => state.stackGraph.stockCardVisible,
 }
 
 export default getters
