@@ -1,9 +1,6 @@
 package com.ac.coin.service.impl;
 
-import com.ac.coin.dao.GraphDAO;
-import com.ac.coin.dao.NodeDAO;
-import com.ac.coin.dao.RelationDAO;
-import com.ac.coin.dao.UserDAO;
+import com.ac.coin.dao.*;
 import com.ac.coin.enums.NodeShape;
 import com.ac.coin.po.Graph;
 import com.ac.coin.po.Node;
@@ -30,14 +27,14 @@ import java.util.regex.Pattern;
 
 @Service
 public class StackOverflowServiceImpl implements StackOverflowService {
+
     @Autowired
-    private NodeDAO nodeDAO;
-    @Autowired
-    private RelationDAO relationDAO;
+    private StackOverflowDAO stackOverflowDAO;
 
     @Override
     public List<NodeVO> findStackNode(){
-        List<Node> nodeList = nodeDAO.findAllNodesByGraphId(-1L);//Stack图谱是Id为-1的默认图谱
+        //todo 等数据爬好后用limit进行限制，不然1w条数据会炸
+        List<Node> nodeList = stackOverflowDAO.findStackNodesLimit();//Stack图谱是Id为-1的默认图谱
         List<NodeVO> nodeVOList = new ArrayList<>();
         for(Node node:nodeList){
             nodeVOList.add(Transform.nodeVO(node));
@@ -47,7 +44,7 @@ public class StackOverflowServiceImpl implements StackOverflowService {
 
     @Override
     public List<RelationVO> findStackRelation(){
-        List<Relation> relationList = relationDAO.findAllRelationsByGraphId(-1L);
+        List<Relation> relationList = stackOverflowDAO.findStackRelationsLimit();
         List<RelationVO> relationVOList = new ArrayList<>();
         for(Relation relation:relationList){
             relationVOList.add(Transform.relationVO(relation));

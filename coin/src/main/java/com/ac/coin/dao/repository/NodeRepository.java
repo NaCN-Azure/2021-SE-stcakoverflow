@@ -17,4 +17,8 @@ public interface NodeRepository extends Neo4jRepository<Node,Long> {
     @Query("match (n1)-[r]->(n2) where id(n1)=$fromId return n2")
     List<Node> findToByFromId(@Param("fromId") Long fromId);
 
+    //以下为我的新增
+    @Query("match (n:questions)-[r]-(m:tags) where n.name=$question return n,m")
+    List<Node> findQTbyName(@Param("question") String question);
+
 }

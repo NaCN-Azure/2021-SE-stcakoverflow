@@ -1,5 +1,6 @@
 package com.ac.coin.dao.repository;
 
+import com.ac.coin.po.Node;
 import com.ac.coin.po.Relation;
 import org.neo4j.driver.internal.value.MapValue;
 import org.neo4j.driver.internal.value.RelationshipValue;
@@ -28,4 +29,8 @@ public interface RelationRepository extends Neo4jRepository<Relation,Long> {
 
     @Query("match (n1)-[r:Relation]->(n2) where r.graphId=$graphId return r")
     List<RelationshipValue> findAllRelationsByGraphId(@Param("graphId") Long graphId);
+
+    //
+    @Query("match (n:questions)-[r]-(m:tags) where n.name=$question return r")
+    List<Relation> findQTRelationbyName(@Param("question") String question);
 }
