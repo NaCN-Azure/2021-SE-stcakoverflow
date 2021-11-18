@@ -3,7 +3,7 @@
     <div class="header">
       <img class="icon" src="https://lililizi.oss-cn-beijing.aliyuncs.com/3678be9a7b6d4697cc40a9b5428f738%28%E5%B7%B2%E5%8E%BB%E5%BA%95%29%20%281%29.jpg" height="30"
            width="30"/>
-      <p class="title"><strong>TestName</strong></p>
+      <p class="title"><strong>Who Am I ？</strong></p>
       <el-input
         class="inline-input"
         v-model="searchInput"
@@ -66,7 +66,7 @@
 <!--        </div>-->
 
         <div class="body_publicGraph" v-show="this.Modal==='publicGraph'">
-
+          <Graph></Graph>
         </div>
 
         <div class="body" v-show="this.Modal==='Warehouse'">
@@ -83,12 +83,14 @@
 import {mapGetters, mapMutations, mapActions} from 'vuex'
 import Avatar from '../Graphs/Components/Avatar'
 import GraphCard from './graphCard'
+import Graph from './Component/Graph.vue'
 
 export default {
   name: "home",
   components: {
     Avatar,
-    GraphCard
+    GraphCard,
+    Graph
   },
   computed: {
     ...mapGetters([
