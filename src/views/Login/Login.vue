@@ -135,7 +135,7 @@
           if (this.loginInSuccess) {
             localStorage.setItem('userName', this.userName)
             localStorage.setItem('userId', this.userParams.id)
-            await this.$router.push('/WelcomePage')
+            await this.$router.push('/home')
           } else {
             await this.$message.error(this.errorMessage)
           }
@@ -159,7 +159,7 @@
           if (this.loginInSuccess) {
             localStorage.setItem('userName', this.userName)
             localStorage.setItem('userId', this.userParams.id)
-            await this.$router.push('/WelcomePage')
+            await this.$router.push('/home')
           } else {
             await this.$message.error(this.errorMessage)
           }

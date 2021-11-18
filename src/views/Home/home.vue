@@ -1,11 +1,10 @@
 <template>
   <div class="box">
     <div class="header">
-      <img class="icon" src="https://lililizi.oss-cn-beijing.aliyuncs.com/%E7%8C%AB%E5%92%AA%20%281%29.png" height="25"
-           width="25"/>
-      <p class="title"><strong>ACoin</strong></p>
+      <img class="icon" src="https://lililizi.oss-cn-beijing.aliyuncs.com/3678be9a7b6d4697cc40a9b5428f738%28%E5%B7%B2%E5%8E%BB%E5%BA%95%29%20%281%29.jpg" height="30"
+           width="30"/>
+      <p class="title"><strong>TestName</strong></p>
       <el-input
-        v-show="this.Modal==='Warehouse'"
         class="inline-input"
         v-model="searchInput"
         placeholder="Search"
@@ -35,13 +34,14 @@
 
     <div>
       <div class="buttonHolder">
-<!--        <el-button id="btn_P" class="btn_PublicGraph" @click="PublicGraph"></el-button>-->
-<!--        <div id="Name_P" style="float: left; font-size: 10px;height: 15px;margin-left: 5px;color: #f3f6fd;"-->
-<!--             v-model="bolPublicGraph"><strong>公共图谱</strong></div>-->
-        <el-button id="btn_W" class="btn_Warehouse" ></el-button>
+        <el-button id="btn_P" class="btn_PublicGraph" @click="PublicGraph"></el-button>
+        <div id="Name_P" style="float: left; font-size: 10px;height: 15px;margin-left: 5px;color: #000000;"
+             v-model="bolPublicGraph"><strong>知识图谱</strong></div>
+        <el-button id="btn_W" class="btn_Warehouse" @click="Warehouse"></el-button>
         <div id="Name_W" style="float: left; font-size: 10px;height: 15px;margin-left: 5px" v-model="bolPublicGraph">
           <strong>个人仓库</strong></div>
         <!--        <a href="#" class="button1 tick" style="margin-top: 20px"></a>-->
+
         <a href="#" class="button1 tick1" style="margin-top: 20px" v-show="this.Modal==='Warehouse'"
            @click="CreateChartVisible=true"></a>
 <!--        <a href="#" class="button1 tick2" style="margin-top: 20px" v-show="this.Modal==='publicGraph'"-->
@@ -64,6 +64,10 @@
 <!--            </div>-->
 <!--          </div>-->
 <!--        </div>-->
+
+        <div class="body_publicGraph" v-show="this.Modal==='publicGraph'">
+
+        </div>
 
         <div class="body" v-show="this.Modal==='Warehouse'">
           <GraphCard v-if="update" style="margin-top: 15px;margin-bottom: 20px;" ref="GraphCard"></GraphCard>
@@ -104,7 +108,7 @@ export default {
       bolPublicGraph: true,
       searchInput: '',
       clearSearch: '',
-      Modal: 'Warehouse',
+      Modal: 'publicGraph',
 
       CreateChartVisible: false,
       // 图谱名
@@ -129,39 +133,46 @@ export default {
     ]),
 
 
-    // PublicGraph() {
-    //   if (this.bolPublicGraph === 'true') return;
-    //   this.Modal = 'publicGraph';
-    //   this.bolPublicGraph = true;
-    //   this.bolWarehouseBtn = false;
-    //   var obj1 = document.getElementById("btn_P");
-    //   obj1.style.cssText = 'background-image: url("https://lililizi.oss-cn-beijing.aliyuncs.com/a_%E8%BD%AF%E5%B7%A53/%E5%9B%BE%E7%89%8712.png") ;background-size:55px;margin-left: 0;margin-top:4px;height:65px;width:65px';
-    //   var obj2 = document.getElementById("btn_W");
-    //   obj2.style.cssText = 'background-image: url("https://lililizi.oss-cn-beijing.aliyuncs.com/a_%E8%BD%AF%E5%B7%A53/%E6%88%BF%E5%AD%90%20%282%29.png") ;background-size:55px;margin-left: 0;margin-top:4px;height:65px;width:65px';
-    //   var obj3 = document.getElementById("Name_W");
-    //   obj3.style.cssText = 'float: left; font-size: 10px;height: 15px;margin-left: 5px;color: #f3f6fd;';
-    //   var obj4 = document.getElementById("Name_P");
-    //   obj4.style.cssText = 'float: left; font-size: 10px;height: 15px;margin-left: 5px;color: #000000;';
-    // },
-    // Warehouse() {
-    //   if (this.bolWarehouseBtn === 'true') return;
-    //   this.Modal = "Warehouse";
-    //   this.bolWarehouseBtn = true;
-    //   this.bolPublicGraph = false;
-    //   var obj1 = document.getElementById("btn_W");
-    //   obj1.style.cssText = 'background-image: url("https://lililizi.oss-cn-beijing.aliyuncs.com/a_%E8%BD%AF%E5%B7%A53/%E5%9B%BE%E7%89%8711.png") ;background-size:55px;margin-left: 0;margin-top:4px;height:65px;width:65px';
-    //   var obj2 = document.getElementById("btn_P");
-    //   obj2.style.cssText = 'background-image: url("https://lililizi.oss-cn-beijing.aliyuncs.com/a_%E8%BD%AF%E5%B7%A53/%E6%95%B0%E6%8D%AE%E5%9B%BE%E8%B0%B1.png") ;background-size:55px;margin-left: 0;margin-top:4px;height:65px;width:65px';
-    //   var obj3 = document.getElementById("Name_P");
-    //   obj3.style.cssText = 'float: left; font-size: 10px;height: 15px;margin-left: 5px;color: #f3f6fd;';
-    //   var obj4 = document.getElementById("Name_W");
-    //   obj4.style.cssText = 'float: left; font-size: 10px;height: 15px;margin-left: 5px;color: #000000;';
-    // },
+    PublicGraph() {
+      if (this.bolPublicGraph === 'true') return;
+      this.Modal = 'publicGraph';
+      this.bolPublicGraph = true;
+      this.bolWarehouseBtn = false;
+      var obj1 = document.getElementById("btn_P");
+      obj1.style.cssText = 'background-image: url("https://lililizi.oss-cn-beijing.aliyuncs.com/a_%E8%BD%AF%E5%B7%A53/%E5%9B%BE%E7%89%8712.png") ;background-size:55px;margin-left: 0;margin-top:4px;height:65px;width:65px';
+      var obj2 = document.getElementById("btn_W");
+      obj2.style.cssText = 'background-image: url("https://lililizi.oss-cn-beijing.aliyuncs.com/a_%E8%BD%AF%E5%B7%A53/%E6%88%BF%E5%AD%90%20%282%29.png") ;background-size:55px;margin-left: 0;margin-top:4px;height:65px;width:65px';
+      var obj3 = document.getElementById("Name_W");
+      obj3.style.cssText = 'float: left; font-size: 10px;height: 15px;margin-left: 5px;color: #f3f6fd;';
+      var obj4 = document.getElementById("Name_P");
+      obj4.style.cssText = 'float: left; font-size: 10px;height: 15px;margin-left: 5px;color: #000000;';
+    },
+    Warehouse() {
+      if (this.bolWarehouseBtn === 'true') return;
+      this.Modal = "Warehouse";
+      this.bolWarehouseBtn = true;
+      this.bolPublicGraph = false;
+      var obj1 = document.getElementById("btn_W");
+      obj1.style.cssText = 'background-image: url("https://lililizi.oss-cn-beijing.aliyuncs.com/a_%E8%BD%AF%E5%B7%A53/%E5%9B%BE%E7%89%8711.png") ;background-size:55px;margin-left: 0;margin-top:4px;height:65px;width:65px';
+      var obj2 = document.getElementById("btn_P");
+      obj2.style.cssText = 'background-image: url("https://lililizi.oss-cn-beijing.aliyuncs.com/a_%E8%BD%AF%E5%B7%A53/%E6%95%B0%E6%8D%AE%E5%9B%BE%E8%B0%B1.png") ;background-size:55px;margin-left: 0;margin-top:4px;height:65px;width:65px';
+      var obj3 = document.getElementById("Name_P");
+      obj3.style.cssText = 'float: left; font-size: 10px;height: 15px;margin-left: 5px;color: #f3f6fd;';
+      var obj4 = document.getElementById("Name_W");
+      obj4.style.cssText = 'float: left; font-size: 10px;height: 15px;margin-left: 5px;color: #000000;';
+    },
+
+    //todo 搜索按钮
     searchGraph() {
-      if (this.searchInput != '') {
-        this.$refs.GraphCard.resetGraphList();
-        this.$refs.GraphCard.resetbolSearch();
-        this.$refs.GraphCard.search(this.searchInput);
+      if(this.Modal==='Warehouse') {
+        if (this.searchInput != '') {
+          this.$refs.GraphCard.resetGraphList();
+          this.$refs.GraphCard.resetbolSearch();
+          this.$refs.GraphCard.search(this.searchInput);
+        }
+      }
+      else{
+        console.log("图谱面板搜索，尚未添加功能")
       }
     },
     clearSearch1() {
@@ -228,14 +239,14 @@ export default {
 
 .icon {
   float: left;
-  margin-top: 19px;
+  margin-top: 16px;
   margin-left: 32px;
 }
 
 .title {
   float: left;
   font-size: 20px;
-  margin-left: 10px;
+  margin-left: 5px;
 }
 
 .leftSidePart {
@@ -252,7 +263,7 @@ export default {
 }
 
 .inline-input >>> .el-input__inner {
-  border-radius: 20px;
+  border-radius: 16px;
 }
 
 .search_btn {
@@ -263,11 +274,20 @@ export default {
 
 .body {
   float: left;
-  width: 90%;
-  margin-top: 10px;
+  width: 97%;
+  margin-top: 20px;
 
   background: white;
-  border-radius: 35px;
+  border-radius: 20px;
+}
+
+.body_publicGraph{
+  float: left;
+  width: 97%;
+  margin-top: 20px;
+  background: white;
+  border-radius: 20px;
+  height:580px;
 }
 
 .recommend {
@@ -337,13 +357,13 @@ export default {
 /*}*/
 
 .button1 {
-  background-image: -webkit-linear-gradient(top, #f4f1ee, #fff);
+  background-image: -webkit-linear-gradient(top, #f4f1ee, rgba(255, 255, 255, 0.7));
   background-image: linear-gradient(top, #f4f1ee, #fff);
   border-radius: 15%;
-  box-shadow: 0px 8px 10px 0px rgba(109, 109, 109, 0.07), inset 0px 4px 1px 1px white, inset 0px -3px 1px 1px rgba(204, 198, 197, .5);
+  box-shadow: 0px 8px 10px 0px rgba(109, 109, 109, 0.07), inset 0px 4px 1px 1px white, inset 0px -3px 1px 1px rgba(204, 198, 197, 0.31);
   float: left;
-  height: 50px;
-  margin: 0 30px 30px 0;
+  height: 30px;
+  margin-left: 2px;
   position: relative;
   width: 50px;
   -webkit-transition: all .1s linear;
@@ -365,7 +385,7 @@ export default {
 .tick1:after {
   content: "＋";
   left: 11px;
-  top: 4px;
+  bottom: 7px;
 }
 
 /*.tick2:after {*/
@@ -382,8 +402,8 @@ export default {
 }
 
 .tick1:hover:after {
-  color: rgba(0, 0, 0, 0.57);
-  text-shadow: 0px 0px 6px rgba(0, 0, 0, 0.56);
+  color: rgba(0, 0, 0, 0.2);
+  text-shadow: 0px 0px 6px rgba(0, 0, 0, 0.21);
 }
 
 /*.tick2:hover:after {*/
@@ -404,19 +424,19 @@ export default {
 }
 
 
-/*.btn_PublicGraph {*/
-/*  float: left;*/
-/*  background-repeat: no-repeat;*/
-/*  border: 0;*/
-/*  background-color: transparent;*/
-/*  background-image: url("https://lililizi.oss-cn-beijing.aliyuncs.com/a_%E8%BD%AF%E5%B7%A53/%E5%9B%BE%E7%89%8712.png");*/
-/*  border-style: none;*/
-/*  background-size: 55px;*/
-/*  margin-left: 0;*/
-/*  margin-top: 4px;*/
-/*  height: 65px;*/
-/*  width: 65px;*/
-/*}*/
+.btn_PublicGraph {
+  float: left;
+  background-repeat: no-repeat;
+  border: 0;
+  background-color: transparent;
+  background-image: url("https://lililizi.oss-cn-beijing.aliyuncs.com/a_%E8%BD%AF%E5%B7%A53/%E5%9B%BE%E7%89%8712.png");
+  border-style: none;
+  background-size: 55px;
+  margin-left: 0;
+  margin-top: 4px;
+  height: 65px;
+  width: 65px;
+}
 
 .btn_Warehouse {
   float: left;
@@ -424,7 +444,7 @@ export default {
   border: 0;
   background-color: transparent;
   border-style: none;
-  background-image: url("https://lililizi.oss-cn-beijing.aliyuncs.com/a_%E8%BD%AF%E5%B7%A53/%E5%9B%BE%E7%89%8711.png");
+  background-image: url("https://lililizi.oss-cn-beijing.aliyuncs.com/a_%E8%BD%AF%E5%B7%A53/%E6%88%BF%E5%AD%90%20%282%29.png");
   background-size: 55px;
   margin-left: 0;
   margin-top: 4px;

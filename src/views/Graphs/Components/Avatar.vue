@@ -12,7 +12,7 @@
 
     <p class="UserName"><strong>{{this.userName}}</strong></p>
     <div class="UserPic">
-      <el-avatar src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"></el-avatar>
+      <el-avatar class="Pic" src="https://lililizi.oss-cn-beijing.aliyuncs.com/%E5%B0%8F%E4%B8%91.png"></el-avatar>
     </div>
     <img class="gun" src="https://lililizi.oss-cn-beijing.aliyuncs.com/%E7%AB%96%E7%BA%BF.png" height="32" width="20"/>
     <el-dialog
@@ -127,8 +127,16 @@
     float: right;
   }
 
+  .Pic{
+    background-color: transparent;
+    margin-top: 5px;
+    width: 35px;
+    height: 35px;
+  }
+
   .UserName {
     float: right;
+    margin-left: 5px;
   }
 
   .gun {

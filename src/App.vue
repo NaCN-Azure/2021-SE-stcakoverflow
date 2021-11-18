@@ -19,6 +19,6 @@
   }
 
   html, body, #app {
-    background-color: #f3f6fd;
+    background-color: #BEEDC7;
   }
 </style>
