@@ -18,7 +18,7 @@ eureka:
 
 spring:
   neo4j:
-    uri: bolt://localhost:7687
+    uri: bolt://106.15.93.81:7687
     authentication:
       username: neo4j
       password: 123456

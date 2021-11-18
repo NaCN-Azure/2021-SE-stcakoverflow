@@ -37,8 +37,6 @@ public class Node {
 
     private boolean isShown;
 
-    private String description;
-
     public Node() {
         this.isHighlighted = false;
         isShown = true;
@@ -156,12 +154,5 @@ public class Node {
         isShown = shown;
     }
 
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
 }
 

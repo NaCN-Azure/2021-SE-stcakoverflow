@@ -11,6 +11,6 @@ import java.util.Optional;
 
 @Service
 public interface StackOverflowService {
-    List<NodeVO> findStackNode();
-    List<RelationVO> findStackRelation();
+    List<NodeVO> findDefaultStackNode();
+    List<RelationVO> findDefaultStackRelation();
 }

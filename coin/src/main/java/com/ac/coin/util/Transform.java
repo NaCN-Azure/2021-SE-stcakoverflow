@@ -13,14 +13,6 @@ import java.util.Map;
 
 public class Transform {
 
-    public static String QuestionsToGraph(String question){
-        return question.replace('丨','\'');
-    }
-
-    public static String QuestionsToDatabase(String question){
-        return question.replace('\'','丨');
-    }
-
     public static Relation relationshipValueToRelation(RelationshipValue relationshipValue){
         Relation relation = new Relation();
         Relationship relationship = relationshipValue.asRelationship();
@@ -82,7 +74,7 @@ public class Transform {
         String className = node.getClass().getName();
         nodeVO.setId(node.getId());
         nodeVO.setGraphId(node.getGraphId());
-        nodeVO.setName( QuestionsToGraph(node.getName()));//丨 to '
+        nodeVO.setName( node.getName());//丨 to '
         nodeVO.setLabel(node.getLabel());
         nodeVO.setColor(node.getColor());
         if (node.getShape()==null) node.setShape(NodeShape.CIRCLE);
@@ -95,14 +87,13 @@ public class Transform {
         nodeVO.setTypesetting_x(node.getTypesetting_x());
         nodeVO.setTypesetting_y(node.getTypesetting_y());
         nodeVO.setShown(node.isShown());
-
         return nodeVO;
     }
 
     public static Node nodePO(NodeVO nodeVO){
         Node node = new Node();
         //必填
-        node.setName(QuestionsToDatabase(nodeVO.getName()));//' to 丨
+        node.setName(nodeVO.getName());//' to 丨
         node.setLabel(nodeVO.getLabel());
         node.setGraphId(nodeVO.getGraphId());
         node.setX(nodeVO.getX());

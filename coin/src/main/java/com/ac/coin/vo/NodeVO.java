@@ -33,8 +33,6 @@ public class NodeVO {
 
     private boolean isShown;
 
-    private String description;
-
 
     //不可自定义
     private boolean isHighlighted;
@@ -158,11 +156,4 @@ public class NodeVO {
         isShown = shown;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public String getDescription() {
-        return description;
-    }
 }
