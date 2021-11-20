@@ -114,7 +114,6 @@ const stackGraph = {
   },
   actions: {
     // 传入当前新增graph名称，将返回的graphId回传到currentGraphId
-
     getstackGraph: async ({commit, state}) => {
       const nodeRes = await findStackNodesAPI()
       const linkRes = await findStackRelationsAPI()

@@ -18,6 +18,7 @@ axios.defaults
 axios.defaults.withCredentials = true
 Vue.use(VueAxios, axios);
 Vue.use(ElementUI);
+Vue.prototype.$axios = axios;
 // Vue.use(VueLive2D)
 
 Vue.config.productionTip = false
