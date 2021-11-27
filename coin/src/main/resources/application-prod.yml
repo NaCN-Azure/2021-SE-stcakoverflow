@@ -1,11 +1,11 @@
 
 spring:
   neo4j:
-    uri: bolt://121.5.118.248:7687
-#    uri: bolt://106.15.93.81:7687
+#    uri: bolt://121.5.118.248:7687
+    uri: bolt://106.15.93.81:7687
     authentication:
       username: neo4j
-      password: root
+      password: 123456
 eureka:
   client:
     serviceUrl:

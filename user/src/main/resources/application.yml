@@ -3,7 +3,7 @@ spring:
     #服务注册名称
     name: user
   profiles:
-    active: dev
+    active: prod
 
 server:
   #运行端口
