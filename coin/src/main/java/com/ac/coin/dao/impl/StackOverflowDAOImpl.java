@@ -1,63 +1,69 @@
 package com.ac.coin.dao.impl;
 
 import com.ac.coin.dao.StackOverflowDAO;
-import com.ac.coin.dao.repository.NodeRepository;
-import com.ac.coin.dao.repository.RelationRepository;
-import com.ac.coin.dao.repository.StackNodeRepository;
-import com.ac.coin.dao.repository.StackRelationRepository;
-import com.ac.coin.po.*;
-import com.ac.coin.util.Transform;
-import com.ac.coin.vo.RelationVO;
+import com.ac.coin.dao.repository.StackRepository;
+import com.ac.coin.dao.repository.TagsRepository;
+import com.ac.coin.po.Tags;
+import org.apache.commons.collections.list.AbstractLinkedList;
 import org.neo4j.driver.internal.value.RelationshipValue;
+import org.neo4j.driver.types.Relationship;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import java.sql.Types;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Repository
 public class StackOverflowDAOImpl implements StackOverflowDAO {
 
     @Autowired
-    StackNodeRepository stackNodeRepository;
+    TagsRepository tagsRepository;
 
     @Autowired
-    StackRelationRepository stackRelationRepository;
+    StackRepository stackRepository;
 
     @Override
-    public List<Tags> getTagsByQuestionName(String question){
-        return stackNodeRepository.findTagsByQuestionName(question);
-    }
-
-    @Override
-    public List<Replies> getRepliesByQuestionName(String question){
-        return stackNodeRepository.findRepliesByQuestionName(question);
-    }
-
-    @Override
-    public Optional<Questions> getQuestion(String question){
-        return stackNodeRepository.findQuestion(question);
-    }
-
-    @Override
-    public List<Relation> getBelongsByQuestion(String question){
-        //todo
-        List<Relation> x = new ArrayList<>();
-        List<RelationshipValue> relationshipValues=stackRelationRepository.findBelongsByQuestionName(question);
-        for(RelationshipValue relationshipValue:relationshipValues){
-            x.add(Transform.relationshipValueToRelation(relationshipValue));
+    public List<Tags> findHottestTags(int year){
+        List<Tags> result = new ArrayList<>();
+        if(year==0){
+            List<Tags> tags=tagsRepository.findHottestTags();
+            result.addAll(tags);
+            for(Tags t:tags){
+                List<Tags> subTags=tagsRepository.findRelatedHottestSubTags(t.getId());
+                result.addAll(subTags);
+            }
+            return result;
         }
-        return x;
+        else {
+            List<Tags> tags=tagsRepository.findHottestTagsByYear(year);
+            result.addAll(tags);
+            for(Tags t:tags){
+                List<Tags> subTags=tagsRepository.findRelatedHottestSubTagsByYear(t.getId(),year);
+                result.addAll(subTags);
+            }
+            return result;
+        }
     }
 
     @Override
-    public List<Relation> getAnswersByQuestion(String question){
-        List<Relation> x = new ArrayList<>();
-        List<RelationshipValue> relationshipValues=stackRelationRepository.findAnswersByQuestionName(question);
-        for(RelationshipValue relationshipValue:relationshipValues){
-            x.add(Transform.relationshipValueToRelation(relationshipValue));
+    public List<RelationshipValue> findHottestRelations(int year){
+        List<RelationshipValue> result = new ArrayList<>();
+        if(year==0){
+            List<Tags> tags=tagsRepository.findHottestTags();
+            for(Tags t:tags){
+                List<RelationshipValue> subTags=stackRepository.findRelatedHottestSubTags(t.getId());
+                result.addAll(subTags);
+            }
+            return result;
         }
-        return x;
+        else {
+            List<Tags> tags=tagsRepository.findHottestTagsByYear(year);
+            for(Tags t:tags){
+                List<RelationshipValue> subTags=stackRepository.findRelatedHottestSubTagsByYear(t.getId(),year);
+                result.addAll(subTags);
+            }
+            return result;
+        }
     }
 
 }
