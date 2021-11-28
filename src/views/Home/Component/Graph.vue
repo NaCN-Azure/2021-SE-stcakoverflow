@@ -7,6 +7,7 @@
 
 <script>
   import {mapMutations, mapActions, mapGetters} from 'vuex'
+  import $ from 'jquery'
   import {
     findStackNodesAPI,
     findStackRelationsAPI,
@@ -87,16 +88,32 @@
     methods: {
       async getGraph() {
         const _this=this;
-        this.$axios.get('/coinService/api/stackoverflow/findStackNodes').then(function (resp) {
-          _this.testData.nodes= JSON.parse(JSON.stringify(resp.data.content));
-          console.log(resp);
-        });
-        this.$axios.get('/coinService/api/stackoverflow/findStackRelations').then(function (resp) {
-          _this.testData.links= JSON.parse(JSON.stringify(resp.data.content));
-        });
+        await this.getNodes();
+        await this.getLinks();
+        // await this.$axios.get('/coinService/api/stackoverflow/findStackNodes').then(function (resp) {
+        //   _this.testData.nodes= JSON.parse(JSON.stringify(resp.data.content));
+        //   console.log(resp);
+        // });
+        //
+        // this.$axios.get('/coinService/api/stackoverflow/findStackRelations').then(function (resp) {
+        //   _this.testData.links= JSON.parse(JSON.stringify(resp.data.content));
+        // });
         setTimeout(function()  {
           _this.initGraph(_this.testData);
-        }, 5000);
+        }, 2000);
+      },
+
+      getNodes(){
+        var _this = this
+        $.getJSON("http://localhost:7001/api/stackoverflow/findStackNodes", function (data) {
+          _this.testData.nodes=data.content;
+        });
+      },
+      getLinks(){
+        var _this = this
+        $.getJSON("http://localhost:7001/api/stackoverflow/findStackRelations", function (data) {
+          _this.testData.links=data.content;
+        });
       },
 
       initGraph(data) {
@@ -180,7 +197,7 @@
           .selectAll("circle")
           .data(nodes)
           .join("circle")
-          .attr("r", 30)
+          .attr("r", d => d.node_size)
           .attr("class", "node")
           .attr("fill", function (d) {
             return d.color
