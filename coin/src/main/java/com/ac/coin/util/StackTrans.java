@@ -38,7 +38,7 @@ public class StackTrans {
         return false;
     }
 
-    public static NodeVO nodeVO(Tags tags,int i){
+    public static NodeVO nodeVO(Tags tags,int i,int father){
         NodeVO nodeVO = new NodeVO();
         nodeVO.setId(tags.getId());
         nodeVO.setGraphId(tags.getGraphId());
@@ -49,7 +49,7 @@ public class StackTrans {
         nodeVO.setFont_size(tags.getFont_size());
         nodeVO.setHighlighted(false);
         nodeVO.setShown(true);
-        if(i<=5){
+        if(i<=father){
             nodeVO.setLabel("SuperTag");
             nodeVO.setColor("#00FF00");
         }
@@ -76,13 +76,18 @@ public class StackTrans {
         return relation;
     }
 
-    public boolean nodeCheck(List<NodeVO> nodeVOS,Long checkid){
-        for(NodeVO nodeVO:nodeVOS){
-            if(nodeVO.getId().equals(checkid)){
-                return true;
-            }
-        }
-        return false;
+    public static RelationVO relationVO(Relation relation){
+        RelationVO relationVO = new RelationVO();
+        relationVO.setId(relation.getId());
+        relationVO.setSource(relation.getFromId());
+        relationVO.setTarget(relation.getToId());
+        relationVO.setGraphId(relation.getGraphId());
+        relationVO.setName(relation.getName());
+        relationVO.setLabel("contains");
+        relationVO.setSolid(false);
+        relationVO.setHighlighted(false);
+        relationVO.setShown(true);
+        return relationVO;
     }
 
 }

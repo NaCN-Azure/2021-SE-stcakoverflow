@@ -14,4 +14,10 @@ public interface StackOverflowDAO{
 
     List<RelationshipValue> findHottestRelations(int year);
 
+    Tags findTargetTag(String name);
+
+    List<Tags> findTargetSubTarget(String name);
+
+    List<RelationshipValue> findTargetSubRelation(String name);
+
 }

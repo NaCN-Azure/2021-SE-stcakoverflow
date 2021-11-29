@@ -9,7 +9,7 @@ public class Tags {
     @GeneratedValue
     private Long id;
 
-    String name;
+    private String name;
 
     private String count_2020;
 
@@ -37,8 +37,6 @@ public class Tags {
 
     private Long graphId;
 
-    private String description;
-
     public String getName() {
         return name;
     }
@@ -65,6 +63,34 @@ public class Tags {
 
     public int getCount() {
         return Integer.parseInt(count);
+    }
+
+    public int getCount_2021() {
+        return Integer.parseInt(count_2021);
+    }
+
+    public int getCount_2020() {
+        return Integer.parseInt(count_2020);
+    }
+
+    public int getCount_2019() {
+        return Integer.parseInt(count_2019);
+    }
+
+    public int getCount_2018() {
+        return Integer.parseInt(count_2018);
+    }
+
+    public int getCount_2017() {
+        return Integer.parseInt(count_2017);
+    }
+
+    public int getCount_2016() {
+        return Integer.parseInt(count_2016);
+    }
+
+    public int getCount_2015() {
+        return Integer.parseInt(count_2015);
     }
 
     public String getExcerpt() {
