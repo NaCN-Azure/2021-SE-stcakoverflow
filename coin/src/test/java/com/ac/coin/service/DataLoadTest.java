@@ -43,28 +43,28 @@ class DataLoadTest {
 
     private Long userId;
 
-    @BeforeEach
-    public void setUp() {
+//    @BeforeEach
+//    public void setUp() {
+//
+//    }
+//
+//    @AfterEach
+//    public void tearDown() {
+//        //userDAO.deleteUserById(userId);
+//    }
 
-    }
-
-    @AfterEach
-    public void tearDown() {
-        //userDAO.deleteUserById(userId);
-    }
-
-    @Test
-    void addNode() {
-        User user = new User("admin", "123456");
-        user.setRisk(31);
-        user.setBalance(20);
-        user.setStocks("{}");
-        user.setIndustries("{}");
-        userId = userDAO.addUser(user);
-
-        Graph graph = new Graph("JoinQuaint");
-        graphId = graphDAO.addGraph(graph, user.getId());
-    }
+//    @Test
+//    void addNode() {
+//        User user = new User("admin", "123456");
+//        user.setRisk(31);
+//        user.setBalance(20);
+//        user.setStocks("{}");
+//        user.setIndustries("{}");
+//        userId = userDAO.addUser(user);
+//
+//        Graph graph = new Graph("JoinQuaint");
+//        graphId = graphDAO.addGraph(graph, user.getId());
+//    }
 //
 //    @Test
 //    void export(){
@@ -76,9 +76,9 @@ class DataLoadTest {
 //    void test(){
 //        graphService.recommand30("admin","joinQuaint");
 //    }
-
-    @Test
-    void test1() throws IOException {
-
-    }
+//
+//    @Test
+//    void test1() throws IOException {
+//
+//    }
 }
