@@ -99,6 +99,6 @@ public class StackOverflowDAOImpl implements StackOverflowDAO {
 
     @Override
     public tagTrend findTargetNodesChart(String name){
-        return chartRepository.findAll().get(0);//我接不上了...
+        return chartRepository.findById(18933).get();//我接不上了...
     }
 }

@@ -9,8 +9,8 @@ spring:
       host: 106.15.93.81
       port: 27017
       database: scrapy
-      username: testname
-      password: 123456
+      username: scrapy
+      password: testname123456
 
 
 eureka:
