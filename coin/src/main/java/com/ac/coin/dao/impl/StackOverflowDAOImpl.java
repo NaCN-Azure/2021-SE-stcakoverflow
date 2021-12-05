@@ -1,14 +1,15 @@
 package com.ac.coin.dao.impl;
 
 import com.ac.coin.dao.StackOverflowDAO;
+import com.ac.coin.dao.repository.ChartRepository;
 import com.ac.coin.dao.repository.StackRepository;
 import com.ac.coin.dao.repository.TagsRepository;
+import com.ac.coin.po.tagTrend;
 import com.ac.coin.po.Tags;
-import org.apache.commons.collections.list.AbstractLinkedList;
 import org.neo4j.driver.internal.value.RelationshipValue;
-import org.neo4j.driver.types.Relationship;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,6 +22,9 @@ public class StackOverflowDAOImpl implements StackOverflowDAO {
 
     @Autowired
     StackRepository stackRepository;
+
+    @Autowired
+    ChartRepository chartRepository;
 
     private List<Tags> findYears(int year){
         if(year==0){
@@ -93,4 +97,8 @@ public class StackOverflowDAOImpl implements StackOverflowDAO {
         return stackRepository.findTargetRelatedSubTags(father.getId());
     }
 
+    @Override
+    public tagTrend findTargetNodesChart(String name){
+        return chartRepository.findAll().get(0);//我接不上了...
+    }
 }

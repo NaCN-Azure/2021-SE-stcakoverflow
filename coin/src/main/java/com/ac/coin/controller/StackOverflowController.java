@@ -52,4 +52,9 @@ public class StackOverflowController {
         return ResponseVO.buildSuccess();//todo 本方法返回tag的最佳回答
     }
 
+    @GetMapping("/findTargetNodesChart/{name}")
+    public ResponseVO findTargetNodesChart(@PathVariable("name") String name){
+        return ResponseVO.buildSuccess(stackOverflowService.findTargetNodesChart(name)); //todo
+    }
+
 }
