@@ -18,6 +18,10 @@
 - **建议**
   - 1.跑的时候**4个yml全部改成dev**，我这个传的版本四个都是**prod**,测的时候记得改，不然**zrg**会揍你
   - 2.前端也许需要加界面，一个是那个能挑选时间的下边栏，还有对4中方法详细信息的右边栏
+  
+## 2021-12-01
+- 增加Stack Overflow Service的单元测试用例
+- 前端可能要加Question类定义
 
 ## 2021-12-5
 - 看一下StackOverflowDAOImpl的findTargetNodesChart方法和配置文件yml，我mongo接不上我不会嘤(`皿´)，I need help
