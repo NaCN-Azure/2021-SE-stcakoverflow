@@ -7,7 +7,7 @@
       <el-input
         class="inline-input"
         v-model="searchInput"
-        placeholder="Search"
+        placeholder="搜索"
         clearable
         @clear="clearSearch1">
         <el-button class="search_btn" slot="suffix" icon="el-icon-search" @click="searchGraph"></el-button>
@@ -39,7 +39,7 @@
              v-model="bolPublicGraph"><strong>知识图谱</strong></div>
         <el-button id="btn_W" class="btn_Warehouse" @click="Warehouse"></el-button>
         <div id="Name_W" style="float: left; font-size: 10px;height: 15px;margin-left: 5px" v-model="bolPublicGraph">
-          <strong>个人仓库</strong></div>
+          <strong class="PersonalHouse">个人仓库</strong></div>
         <!--        <a href="#" class="button1 tick" style="margin-top: 20px"></a>-->
 
         <a href="#" class="button1 tick1" style="margin-top: 20px" v-show="this.Modal==='Warehouse'"
@@ -65,8 +65,12 @@
 <!--          </div>-->
 <!--        </div>-->
 
-        <div class="body_publicGraph" v-show="this.Modal==='publicGraph'">
-          <Graph></Graph>
+        <div class="body_publicGraph" id="public_Graph" v-show="this.Modal==='publicGraph'">
+          <Graph ref="publicGraph"></Graph>
+        </div>
+
+        <div class="RightBlock" v-show="rightBlock">
+          搜索结果
         </div>
 
         <div class="body" v-show="this.Modal==='Warehouse'">
@@ -106,6 +110,7 @@ export default {
 
   data() {
     return {
+      rightBlock:false,
       bolWarehouseBtn: false,
       bolPublicGraph: true,
       searchInput: '',
@@ -162,6 +167,13 @@ export default {
       obj3.style.cssText = 'float: left; font-size: 10px;height: 15px;margin-left: 5px;color: #f3f6fd;';
       var obj4 = document.getElementById("Name_W");
       obj4.style.cssText = 'float: left; font-size: 10px;height: 15px;margin-left: 5px;color: #000000;';
+      if(this.rightBlock===true){
+        this.rightBlock=false;
+        var obj = document.getElementById("public_Graph");
+        obj.style.cssText = 'float: left;width: 1400px;margin-top: 20px;background: white; border-radius: 20px; height:580px;';
+        this.$refs.publicGraph.ResetSize();
+      }
+
     },
 
     //todo 搜索按钮
@@ -174,13 +186,26 @@ export default {
         }
       }
       else{
-        console.log("图谱面板搜索，尚未添加功能")
+        if (this.searchInput != '') {
+          var obj = document.getElementById("public_Graph");
+          obj.style.cssText = 'float: left;width: 900px;margin-top: 20px;background: white; border-radius: 20px; height:580px;';
+          this.$refs.publicGraph.changeSize();
+          this.rightBlock = true;
+        }
       }
     },
     clearSearch1() {
       this.searchInput = '';
-      this.$refs.GraphCard.resetGraphList();
-      this.$refs.GraphCard.resetbolSearch();
+      if(this.Modal==='Warehouse') {
+        this.$refs.GraphCard.resetGraphList();
+        this.$refs.GraphCard.resetbolSearch();
+      }
+      else{
+        this.rightBlock=false;
+        var obj = document.getElementById("public_Graph");
+        obj.style.cssText = 'float: left;width: 1400px;margin-top: 20px;background: white; border-radius: 20px; height:580px;';
+        this.$refs.publicGraph.ResetSize();
+      }
     },
 
     changePic() {
@@ -285,11 +310,11 @@ export default {
 
 .body_publicGraph{
   float: left;
-  width: 97%;
+  width:1400px;
   margin-top: 20px;
   background: white;
   border-radius: 20px;
-  height:580px;
+  height:575px;
 }
 
 .recommend {
@@ -453,5 +478,17 @@ export default {
   height: 65px;
   width: 65px;
 }
+  .PersonalHouse{
+    color: #ffffff;
+  }
 
+  .RightBlock{
+    margin-top: 50px;
+    margin-left: 50px;
+    float: left;
+    width: 400px;
+    height: 500px;
+    background: white;
+    border-radius: 15px;
+  }
 </style>

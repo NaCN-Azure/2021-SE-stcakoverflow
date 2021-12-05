@@ -1,7 +1,15 @@
 <template>
   <div>
-    <div class="GraphMapContainer"></div>
-
+    <div class="GraphMapContainer" style="position:relative; z-index:1;"  >
+      <el-select v-show="select_year" class="my-el-select" v-model="value_year" placeholder="年份" @change="change" style="width: 75px;right: 0;margin-top: 10px;margin-right: 15px;position:absolute; z-index:5;">
+        <el-option
+          v-for="item in options_year"
+          :key="item.value"
+          :label="item.label"
+          :value="item.value">
+        </el-option>
+      </el-select>
+    </div>
   </div>
 </template>
 
@@ -17,6 +25,15 @@
     name: "Graph",
     data() {
       return {
+        options_year: [{
+          value: '2018',
+          label: '2018年'
+        }, {
+          value: '2019',
+          label: '2019年'
+        }],
+        value_year: '',
+
         testData1: {
           "nodes":[{"id":17257,"graphId":-1,"name":"Answer 2ToQ17233","label":"Replies","x":0.0,"y":0.0,"shape":"circle","color":"#F4A460","node_size":10,"font_size":10,"typesetting_x":0.0,"typesetting_y":0.0,"shown":true,"highlighted":false},{"id":17284,"graphId":-1,"name":"Answer 1ToQ17252","label":"Replies","x":0.0,"y":0.0,"shape":"circle","color":"#F4A460","node_size":10,"font_size":10,"typesetting_x":0.0,"typesetting_y":0.0,"shown":true,"highlighted":false},{"id":17252,"graphId":-1,"name":"Why is processing a sorted array faster than processing an unsorted array?","label":"Questions","x":0.0,"y":0.0,"shape":"circle","color":"#EE82EE","node_size":10,"font_size":10,"typesetting_x":0.0,"typesetting_y":0.0,"shown":true,"highlighted":false},{"id":17319,"graphId":-1,"name":"undo","label":"Tags","x":0.0,"y":0.0,"shape":"circle","color":"#66ccff","node_size":10,"font_size":10,"typesetting_x":0.0,"typesetting_y":0.0,"shown":true,"highlighted":false},{"id":17320,"graphId":-1,"name":"Answer 3ToQ17233","label":"Replies","x":0.0,"y":0.0,"shape":"circle","color":"#F4A460","node_size":10,"font_size":10,"typesetting_x":0.0,"typesetting_y":0.0,"shown":true,"highlighted":false},{"id":17283,"graphId":-1,"name":"performance","label":"Tags","x":0.0,"y":0.0,"shape":"circle","color":"#66ccff","node_size":10,"font_size":10,"typesetting_x":0.0,"typesetting_y":0.0,"shown":true,"highlighted":false},{"id":17258,"graphId":-1,"name":"git-push","label":"Tags","x":0.0,"y":0.0,"shape":"circle","color":"#66ccff","node_size":10,"font_size":10,"typesetting_x":0.0,"typesetting_y":0.0,"shown":true,"highlighted":false},{"id":17318,"graphId":-1,"name":"git","label":"Tags","x":0.0,"y":0.0,"shape":"circle","color":"#66ccff","node_size":10,"font_size":10,"typesetting_x":0.0,"typesetting_y":0.0,"shown":true,"highlighted":false},{"id":17317,"graphId":-1,"name":"Answer 3ToQ17252","label":"Replies","x":0.0,"y":0.0,"shape":"circle","color":"#F4A460","node_size":10,"font_size":10,"typesetting_x":0.0,"typesetting_y":0.0,"shown":true,"highlighted":false},{"id":17233,"graphId":-1,"name":"How do I undo the most recent local commits in Git?","label":"Questions","x":0.0,"y":0.0,"shape":"circle","color":"#EE82EE","node_size":10,"font_size":10,"typesetting_x":0.0,"typesetting_y":0.0,"shown":true,"highlighted":false},{"id":17236,"graphId":-1,"name":"How do I delete a Git branch locally and remotely?","label":"Questions","x":0.0,"y":0.0,"shape":"circle","color":"#EE82EE","node_size":10,"font_size":10,"typesetting_x":0.0,"typesetting_y":0.0,"shown":true,"highlighted":false},{"id":17234,"graphId":-1,"name":"version-control","label":"Tags","x":0.0,"y":0.0,"shape":"circle","color":"#66ccff","node_size":10,"font_size":10,"typesetting_x":0.0,"typesetting_y":0.0,"shown":true,"highlighted":false},{"id":17259,"graphId":-1,"name":"Answer 2ToQ17236","label":"Replies","x":0.0,"y":0.0,"shape":"circle","color":"#F4A460","node_size":10,"font_size":10,"typesetting_x":0.0,"typesetting_y":0.0,"shown":true,"highlighted":false},{"id":17232,"graphId":-1,"name":"cpu-architecture","label":"Tags","x":0.0,"y":0.0,"shape":"circle","color":"#66ccff","node_size":10,"font_size":10,"typesetting_x":0.0,"typesetting_y":0.0,"shown":true,"highlighted":false},{"id":17253,"graphId":-1,"name":"c++","label":"Tags","x":0.0,"y":0.0,"shape":"circle","color":"#66ccff","node_size":10,"font_size":10,"typesetting_x":0.0,"typesetting_y":0.0,"shown":true,"highlighted":false},{"id":17321,"graphId":-1,"name":"git-remote","label":"Tags","x":0.0,"y":0.0,"shape":"circle","color":"#66ccff","node_size":10,"font_size":10,"typesetting_x":0.0,"typesetting_y":0.0,"shown":true,"highlighted":false},{"id":17237,"graphId":-1,"name":"git-branch","label":"Tags","x":0.0,"y":0.0,"shape":"circle","color":"#66ccff","node_size":10,"font_size":10,"typesetting_x":0.0,"typesetting_y":0.0,"shown":true,"highlighted":false},{"id":17256,"graphId":-1,"name":"git-commit","label":"Tags","x":0.0,"y":0.0,"shape":"circle","color":"#66ccff","node_size":10,"font_size":10,"typesetting_x":0.0,"typesetting_y":0.0,"shown":true,"highlighted":false},{"id":17235,"graphId":-1,"name":"Answer 1ToQ17233","label":"Replies","x":0.0,"y":0.0,"shape":"circle","color":"#F4A460","node_size":10,"font_size":10,"typesetting_x":0.0,"typesetting_y":0.0,"shown":true,"highlighted":false},{"id":17322,"graphId":-1,"name":"Answer 3ToQ17236","label":"Replies","x":0.0,"y":0.0,"shape":"circle","color":"#F4A460","node_size":10,"font_size":10,"typesetting_x":0.0,"typesetting_y":0.0,"shown":true,"highlighted":false},{"id":17238,"graphId":-1,"name":"Answer 1ToQ17236","label":"Replies","x":0.0,"y":0.0,"shape":"circle","color":"#F4A460","node_size":10,"font_size":10,"typesetting_x":0.0,"typesetting_y":0.0,"shown":true,"highlighted":false},{"id":17254,"graphId":-1,"name":"branch-prediction","label":"Tags","x":0.0,"y":0.0,"shape":"circle","color":"#66ccff","node_size":10,"font_size":10,"typesetting_x":0.0,"typesetting_y":0.0,"shown":true,"highlighted":false},{"id":17231,"graphId":-1,"name":"java","label":"Tags","x":0.0,"y":0.0,"shape":"circle","color":"#66ccff","node_size":10,"font_size":10,"typesetting_x":0.0,"typesetting_y":0.0,"shown":true,"highlighted":false},{"id":17255,"graphId":-1,"name":"Answer 2ToQ17252","label":"Replies","x":0.0,"y":0.0,"shape":"circle","color":"#F4A460","node_size":10,"font_size":10,"typesetting_x":0.0,"typesetting_y":0.0,"shown":true,"highlighted":false}],
           "links": [{"id":37857,"source":17236,"target":17318,"graphId":-1,"name":"belongs","label":null,"solid":false,"shown":false,"highlighted":false},{"id":37718,"source":17322,"target":17236,"graphId":-1,"name":"answers","label":null,"solid":false,"shown":false,"highlighted":false},{"id":37808,"source":17320,"target":17233,"graphId":-1,"name":"answers","label":null,"solid":false,"shown":false,"highlighted":false},{"id":37806,"source":17233,"target":17318,"graphId":-1,"name":"belongs","label":null,"solid":false,"shown":false,"highlighted":false},{"id":37805,"source":17317,"target":17252,"graphId":-1,"name":"answers","label":null,"solid":false,"shown":false,"highlighted":false},{"id":37715,"source":17257,"target":17233,"graphId":-1,"name":"answers","label":null,"solid":false,"shown":false,"highlighted":false},{"id":36753,"source":17238,"target":17236,"graphId":-1,"name":"answers","label":null,"solid":false,"shown":false,"highlighted":false},{"id":37804,"source":17252,"target":17283,"graphId":-1,"name":"belongs","label":null,"solid":false,"shown":false,"highlighted":false},{"id":37867,"source":17252,"target":17231,"graphId":-1,"name":"belongs","label":null,"solid":false,"shown":false,"highlighted":false},{"id":37888,"source":17252,"target":17232,"graphId":-1,"name":"belongs","label":null,"solid":false,"shown":false,"highlighted":false},{"id":37710,"source":17252,"target":17253,"graphId":-1,"name":"belongs","label":null,"solid":false,"shown":false,"highlighted":false},{"id":37810,"source":17236,"target":17321,"graphId":-1,"name":"belongs","label":null,"solid":false,"shown":false,"highlighted":false},{"id":37807,"source":17233,"target":17319,"graphId":-1,"name":"belongs","label":null,"solid":false,"shown":false,"highlighted":false},{"id":37809,"source":17236,"target":17234,"graphId":-1,"name":"belongs","label":null,"solid":false,"shown":false,"highlighted":false},{"id":37714,"source":17233,"target":17256,"graphId":-1,"name":"belongs","label":null,"solid":false,"shown":false,"highlighted":false},{"id":37711,"source":17252,"target":17254,"graphId":-1,"name":"belongs","label":null,"solid":false,"shown":false,"highlighted":false},{"id":37858,"source":17236,"target":17237,"graphId":-1,"name":"belongs","label":null,"solid":false,"shown":false,"highlighted":false},{"id":37713,"source":17255,"target":17252,"graphId":-1,"name":"answers","label":null,"solid":false,"shown":false,"highlighted":false},{"id":37712,"source":17284,"target":17252,"graphId":-1,"name":"answers","label":null,"solid":false,"shown":false,"highlighted":false},{"id":37855,"source":17233,"target":17234,"graphId":-1,"name":"belongs","label":null,"solid":false,"shown":false,"highlighted":false},{"id":37716,"source":17236,"target":17258,"graphId":-1,"name":"belongs","label":null,"solid":false,"shown":false,"highlighted":false},{"id":37856,"source":17235,"target":17233,"graphId":-1,"name":"answers","label":null,"solid":false,"shown":false,"highlighted":false},{"id":37717,"source":17259,"target":17236,"graphId":-1,"name":"answers","label":null,"solid":false,"shown":false,"highlighted":false}]
@@ -26,7 +43,9 @@
           "links": []
           },
         update: true,
+        select_year:true,
 
+        year_show:false,
         flagAddRelation: 'false',
         mousedownNode: '',
         mouseupNode: '',
@@ -67,8 +86,8 @@
 
         svgArea: null,
         simulation: null,
-        width: 1250,
-        height: 520,
+        width: 1000,
+        height: 400,
         links: [],
         nodes: [],
         rectNodes: [], //方形节点
@@ -94,13 +113,13 @@
         //   _this.testData.nodes= JSON.parse(JSON.stringify(resp.data.content));
         //   console.log(resp);
         // });
-        
+
         //
         // this.$axios.get('/coinService/api/stackoverflow/findStackRelations').then(function (resp) {
         //   _this.testData.links= JSON.parse(JSON.stringify(resp.data.content));
         // });
         setTimeout(function()  {
-          _this.initGraph(_this.testData);
+          _this.initGraph(_this.testData1);
         }, 2000);
       },
 
@@ -330,22 +349,43 @@
           .on("end", dragended);
       },
 
-      removeSvg() {
-        console.log('remove!')
-        d3.selectAll(".bodyGraphContainer > *").remove();
-      },
-
       resetGraph(index) {
         if(localStorage.getItem('currentId')!==index){
           localStorage.setItem('currentId',index)
           this.refreshSelf()
         }
+      },
+      removeSvg() {
+        // console.log('remove!')
+        d3.selectAll(".GraphMapContainer > *").remove();
+      },
+      change(value){
+        console.log(value);
+        this.removeSvg();
+      },
+
+      changeSize(){
+        this.removeSvg();
+        this.width=this.width/1.5;
+        this.initGraph(this.testData1);
+        this.select_year=false;
+      },
+
+      ResetSize(){
+        this.removeSvg();
+        this.width=this.width*1.5;
+        this.initGraph(this.testData1);
+        this.select_year=true;
       }
-    }
+    },
   }
 </script>
 
 <style scoped>
-
+  .my-el-select /deep/ .el-input .el-input__inner {
+    border-color: #DCDFE6  !important;
+    background: transparent;
+    border: 0;
+  }
 </style>
 
