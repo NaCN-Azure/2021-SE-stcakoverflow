@@ -25,12 +25,27 @@
     name: "Graph",
     data() {
       return {
-        options_year: [{
+        options_year: [ {
+          value: '2021',
+          label: '2021年'
+        },{
+          value: '2020',
+          label: '2020年'
+        },{
+          value: '2019',
+          label: '2019年'
+        },{
           value: '2018',
           label: '2018年'
         }, {
-          value: '2019',
-          label: '2019年'
+          value: '2017',
+          label: '2017年'
+        }, {
+          value: '2016',
+          label: '2016年'
+        }, {
+          value: '2015',
+          label: '2015年'
         }],
         value_year: '',
 
@@ -107,8 +122,9 @@
     methods: {
       async getGraph() {
         const _this=this;
-        await this.getNodes();
-        await this.getLinks();
+
+        this.getNodes();
+        this.getLinks();
         // await this.$axios.get('/coinService/api/stackoverflow/findStackNodes').then(function (resp) {
         //   _this.testData.nodes= JSON.parse(JSON.stringify(resp.data.content));
         //   console.log(resp);
@@ -120,19 +136,21 @@
         // });
         setTimeout(function()  {
           _this.initGraph(_this.testData1);
-        }, 2000);
+        }, 3000);
       },
 
       getNodes(){
         var _this = this
         $.getJSON("http://localhost:7001/api/stackoverflow/findStackNodes", function (data) {
           _this.testData.nodes=data.content;
+          console.log(data.content)
         });
       },
       getLinks(){
         var _this = this
         $.getJSON("http://localhost:7001/api/stackoverflow/findStackRelations", function (data) {
           _this.testData.links=data.content;
+          console.log(data.content)
         });
       },
 
@@ -213,7 +231,7 @@
 
         this.nodes = g.append("g")
           .attr("stroke", "#999")
-          .attr("stroke-width", 2)
+          .attr("stroke-width", 1)
           .selectAll("circle")
           .data(nodes)
           .join("circle")
@@ -300,7 +318,7 @@
           .attr("markerUnits", "strokeWidth")
           .attr("markerUnits", "userSpaceOnUse")
           .attr("viewBox", "0 -5 10 10")
-          .attr("refX", 35)
+          .attr("refX", 15)
           .attr("refY", 0)
           .attr("markerWidth", 12)
           .attr("markerHeight", 12)
@@ -315,7 +333,7 @@
           .attr("markerUnits", "strokeWidth")
           .attr("markerUnits", "userSpaceOnUse")
           .attr("viewBox", "0 -5 10 10")
-          .attr("refX", -25)
+          .attr("refX", -5)
           .attr("refY", 0)
           .attr("markerWidth", 12)
           .attr("markerHeight", 12)
