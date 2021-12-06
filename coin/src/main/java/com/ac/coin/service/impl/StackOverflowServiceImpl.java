@@ -26,7 +26,7 @@ public class StackOverflowServiceImpl implements StackOverflowService {
         int i=1;
         for(Tags t:tags){
             if(StackTrans.has(nodeVOS,t.getId())) continue;
-            nodeVOS.add(StackTrans.nodeVO(t,i,5));
+            nodeVOS.add(StackTrans.nodeVO(t,i,10));
             i=i+1;
         }
         return nodeVOS;

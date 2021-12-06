@@ -14,7 +14,7 @@ import java.util.Optional;
 
 public interface StackRepository extends Neo4jRepository<contains,Long> {
 
-    @Query("match (n:Tags)-[r:contains]->(m) where id(n)=$FatherId and exists(r.count) return r order by toInt(r.count) DESC limit 5")
+    @Query("match (n:Tags)-[r:contains]->(m) where id(n)=$FatherId and exists(r.count) return r order by toInt(r.count) DESC limit 10")
     List<RelationshipValue> findRelatedHottestSubTags(@Param("FatherId") Long FatherId);
 
     @Query("match (n:Tags)-[r:contains]->(m) where id(n)=$FatherId return r")
