@@ -25,3 +25,6 @@
 
 ## 2021-12-5
 - 看一下StackOverflowDAOImpl的findTargetNodesChart方法和配置文件yml，我mongo接不上我不会嘤(`皿´)，I need help
+
+## 2021-12-6
+- 我解决了，新增接口findTargetNodesChart

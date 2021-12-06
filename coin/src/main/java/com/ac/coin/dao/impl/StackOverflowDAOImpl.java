@@ -13,6 +13,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public class StackOverflowDAOImpl implements StackOverflowDAO {
@@ -99,6 +100,6 @@ public class StackOverflowDAOImpl implements StackOverflowDAO {
 
     @Override
     public tagTrend findTargetNodesChart(String name){
-        return chartRepository.findById(18933).get();//我接不上了...
+        return chartRepository.findByTagName(name);//我接不上了...
     }
 }

@@ -11,6 +11,7 @@ spring:
       database: scrapy
       username: scrapy
       password: testname123456
+      authentication-database: scrapy
 
 
 eureka:
