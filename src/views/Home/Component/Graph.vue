@@ -1,14 +1,14 @@
 <template>
   <div>
+    <el-select v-show="select_year" class="my-el-select" v-model="value_year" placeholder="    年份" @change="change" style="width: 90px;right: 0;margin-top: 10px;margin-right: 15px;float:right; z-index:5;">
+      <el-option
+        v-for="item in options_year"
+        :key="item.value"
+        :label="item.label"
+        :value="item.value">
+      </el-option>
+    </el-select>
     <div class="GraphMapContainer" style="position:relative; z-index:1;"  >
-      <el-select v-show="select_year" class="my-el-select" v-model="value_year" placeholder="年份" @change="change" style="width: 75px;right: 0;margin-top: 10px;margin-right: 15px;position:absolute; z-index:5;">
-        <el-option
-          v-for="item in options_year"
-          :key="item.value"
-          :label="item.label"
-          :value="item.value">
-        </el-option>
-      </el-select>
     </div>
   </div>
 </template>
@@ -123,7 +123,8 @@
       async getGraph() {
         const _this=this;
 
-        this.getNodes();
+        await this.getNodes();
+        console.log("-")
         this.getLinks();
         // await this.$axios.get('/coinService/api/stackoverflow/findStackNodes').then(function (resp) {
         //   _this.testData.nodes= JSON.parse(JSON.stringify(resp.data.content));
@@ -135,7 +136,7 @@
         //   _this.testData.links= JSON.parse(JSON.stringify(resp.data.content));
         // });
         setTimeout(function()  {
-          _this.initGraph(_this.testData1);
+          _this.initGraph(_this.testData);
         }, 3000);
       },
 
@@ -143,14 +144,29 @@
         var _this = this
         $.getJSON("http://localhost:7001/api/stackoverflow/findStackNodes", function (data) {
           _this.testData.nodes=data.content;
-          console.log(data.content)
+          // console.log(data.content)
         });
       },
       getLinks(){
-        var _this = this
+        var _this = this;
         $.getJSON("http://localhost:7001/api/stackoverflow/findStackRelations", function (data) {
+          // let tempList=[];
+          // for(let i=0;i<_this.testData.nodes.length;i++){
+          //   tempList.push(_this.testData.nodes[i].id)
+          // }
+          // let tempLink=[];
+          // for(let i=0;i<data.content.length;i++){
+          //   // console.log(tempList.indexOf(data.content[i].source)+" "+tempList.indexOf(data.content[i].target))
+          //   if((tempList.indexOf(data.content[i].source)!=-1)&&(tempList.indexOf(data.content[i].target)!=-1)){
+          //     tempLink.push(data.content[i]);
+          //   }
+          // }
+          // console.log(tempLink)
           _this.testData.links=data.content;
-          console.log(data.content)
+
+
+          // console.log(_this.testData.links)
+
         });
       },
 
@@ -377,6 +393,8 @@
         // console.log('remove!')
         d3.selectAll(".GraphMapContainer > *").remove();
       },
+
+
       change(value){
         console.log(value);
         this.removeSvg();
@@ -385,14 +403,14 @@
       changeSize(){
         this.removeSvg();
         this.width=this.width/1.5;
-        this.initGraph(this.testData1);
+        this.initGraph(this.testData);
         this.select_year=false;
       },
 
       ResetSize(){
         this.removeSvg();
         this.width=this.width*1.5;
-        this.initGraph(this.testData1);
+        this.initGraph(this.testData);
         this.select_year=true;
       }
     },
