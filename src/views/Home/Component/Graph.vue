@@ -102,7 +102,7 @@
         svgArea: null,
         simulation: null,
         width: 1000,
-        height: 400,
+        height: 370,
         links: [],
         nodes: [],
         rectNodes: [], //方形节点
@@ -119,55 +119,20 @@
     async mounted() {
       await this.getGraph();
     },
+
     methods: {
       async getGraph() {
         const _this=this;
+        await this.$axios.all([
+          this.$axios.get('/coinService/api/stackoverflow/findStackNodes'),
+          this.$axios.get('/coinService/api/stackoverflow/findStackRelations')
+        ])
+          .then(this.$axios.spread(function (Resp1, Resp2) {
+            _this.testData.nodes=Resp1.data.content;
+            _this.testData.links=Resp2.data.content;
+          }));
+        _this.initGraph(_this.testData);
 
-        await this.getNodes();
-        console.log("-")
-        this.getLinks();
-        // await this.$axios.get('/coinService/api/stackoverflow/findStackNodes').then(function (resp) {
-        //   _this.testData.nodes= JSON.parse(JSON.stringify(resp.data.content));
-        //   console.log(resp);
-        // });
-
-        //
-        // this.$axios.get('/coinService/api/stackoverflow/findStackRelations').then(function (resp) {
-        //   _this.testData.links= JSON.parse(JSON.stringify(resp.data.content));
-        // });
-        setTimeout(function()  {
-          _this.initGraph(_this.testData);
-        }, 3000);
-      },
-
-      getNodes(){
-        var _this = this
-        $.getJSON("http://localhost:7001/api/stackoverflow/findStackNodes", function (data) {
-          _this.testData.nodes=data.content;
-          // console.log(data.content)
-        });
-      },
-      getLinks(){
-        var _this = this;
-        $.getJSON("http://localhost:7001/api/stackoverflow/findStackRelations", function (data) {
-          // let tempList=[];
-          // for(let i=0;i<_this.testData.nodes.length;i++){
-          //   tempList.push(_this.testData.nodes[i].id)
-          // }
-          // let tempLink=[];
-          // for(let i=0;i<data.content.length;i++){
-          //   // console.log(tempList.indexOf(data.content[i].source)+" "+tempList.indexOf(data.content[i].target))
-          //   if((tempList.indexOf(data.content[i].source)!=-1)&&(tempList.indexOf(data.content[i].target)!=-1)){
-          //     tempLink.push(data.content[i]);
-          //   }
-          // }
-          // console.log(tempLink)
-          _this.testData.links=data.content;
-
-
-          // console.log(_this.testData.links)
-
-        });
       },
 
       initGraph(data) {
@@ -395,9 +360,21 @@
       },
 
 
-      change(value){
+      async change(value){
         console.log(value);
         this.removeSvg();
+        const _this=this;
+        await this.$axios.all([
+          this.$axios.get('/coinService/api/stackoverflow/findStackNodesYear/'+value),
+          this.$axios.get('/coinService/api/stackoverflow/findStackRelationsYear/'+value)
+        ])
+          .then(this.$axios.spread(function (Resp1, Resp2) {
+            _this.testData.nodes=Resp1.data.content;
+            _this.testData.links=Resp2.data.content;
+          }));
+
+        _this.initGraph(_this.testData);
+
       },
 
       changeSize(){

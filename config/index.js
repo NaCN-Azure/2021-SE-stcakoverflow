@@ -14,7 +14,7 @@ module.exports = {
     // localhost后的地址为后端启动的端口
     proxyTable: {
       '/**':{
-        target: 'http://localhost:8330/',
+        target: 'http://localhost:7001/',
         changeOrigin: true,
         // pathRewrite: {
         //   '^/api': '',
