@@ -372,22 +372,31 @@
             _this.testData.nodes=Resp1.data.content;
             _this.testData.links=Resp2.data.content;
           }));
-
         _this.initGraph(_this.testData);
-
       },
 
       changeSize(){
+        if(this.width>900) {
+          this.width = this.width / 1.7;
+        }
         this.removeSvg();
-        this.width=this.width/1.5;
-        this.initGraph(this.testData);
         this.select_year=false;
       },
 
-      ResetSize(){
+      async ResetSize(){
+        this.width=this.width*1.7;
         this.removeSvg();
-        this.width=this.width*1.5;
-        this.initGraph(this.testData);
+
+        const _this=this;
+        await this.$axios.all([
+          this.$axios.get('/coinService/api/stackoverflow/findStackNodes'),
+          this.$axios.get('/coinService/api/stackoverflow/findStackRelations')
+        ])
+          .then(this.$axios.spread(function (Resp1, Resp2) {
+            _this.testData.nodes=Resp1.data.content;
+            _this.testData.links=Resp2.data.content;
+          }));
+        _this.initGraph(_this.testData);
         this.select_year=true;
       }
     },

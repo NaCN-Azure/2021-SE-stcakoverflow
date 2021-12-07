@@ -70,7 +70,8 @@
         </div>
 
         <div class="RightBlock" v-show="rightBlock">
-          搜索结果
+          <strong>{{SearchRes.name}}</strong>
+          <p>{{SearchRes.excerpt}}</p>
         </div>
 
         <div class="body" v-show="this.Modal==='Warehouse'">
@@ -123,6 +124,12 @@ export default {
 
       update: true,
       updateFour: true,
+
+      SearchData: {
+        "nodes":[],
+        "links": []
+      },
+      SearchRes:{},
     }
   },
   methods: {
@@ -177,7 +184,7 @@ export default {
     },
 
     //todo 搜索按钮
-    searchGraph() {
+    async searchGraph() {
       if(this.Modal==='Warehouse') {
         if (this.searchInput != '') {
           this.$refs.GraphCard.resetGraphList();
@@ -191,6 +198,19 @@ export default {
           obj.style.cssText = 'float: left;width: 900px;margin-top: 20px;background: white; border-radius: 20px; height:580px;';
           this.$refs.publicGraph.changeSize();
           this.rightBlock = true;
+
+          const _this=this;
+          await this.$axios.all([
+            this.$axios.get('/coinService/api/stackoverflow/findTargetNodesInfo/'+this.searchInput),
+            this.$axios.get('/coinService/api/stackoverflow/findTargetNodesRelated/'+this.searchInput),
+            this.$axios.get('/coinService/api/stackoverflow/findTargetNodesDescription/'+this.searchInput)
+          ])
+            .then(this.$axios.spread(function (Resp1, Resp2,Resp3) {
+              _this.SearchData.nodes=Resp1.data.content;
+              _this.SearchData.links=Resp2.data.content;
+              _this.SearchRes=Resp3.data.content;
+            }));
+          this.$refs.publicGraph.initGraph(_this.SearchData);
         }
       }
     },
