@@ -7,11 +7,12 @@
       <el-autocomplete
         class="inline-input"
         v-model="searchInput"
-        :fetch-suggestions="querySearch"
-        placeholder="搜索标签"
-        :trigger-on-focus="false"
+        :fetch-suggestions="querySearchAsync"
+        placeholder="搜索"
+        value-key="SearchContent"
         clearable
-        @clear="clearSearch1">
+        @clear="clearSearch1"
+        @select="handleSelect">
         <el-button class="search_btn" slot="suffix" icon="el-icon-search" @click="searchGraph"></el-button>
       </el-autocomplete>
       <Avatar></Avatar>
@@ -75,6 +76,15 @@
           <strong>{{SearchRes.name}}</strong>
           <p>{{SearchRes.excerpt}}</p>
         </div>
+
+        <div class="PopularQuestion" v-show="PopularQuestion">
+          <strong>Five Most Hot Question</strong>
+          <p>{{MostPopQuestion[0]}}</p>
+          <p>{{MostPopQuestion[1]}}</p>
+          <p>{{MostPopQuestion[2]}}</p>
+          <p>{{MostPopQuestion[3]}}</p>
+          <p>{{MostPopQuestion[4]}}</p>
+        </div>
         <div id="QuestionChart" class="RightChart" v-show="rightChart">
 
         </div>
@@ -119,6 +129,7 @@ export default {
   data() {
     return {
       rightBlock:false,
+      PopularQuestion:false,
       rightChart:false,
       bolWarehouseBtn: false,
       bolPublicGraph: true,
@@ -129,6 +140,8 @@ export default {
       CreateChartVisible: false,
       // 图谱名
       input_chart: '',
+      SearchTimeout:  null,
+      FuzzyRes:[],
 
       update: true,
       updateFour: true,
@@ -139,6 +152,7 @@ export default {
       },
       SearchRes:{},
       tagChart:null
+      MostPopQuestion:[],
     }
   },
   methods: {
@@ -146,7 +160,6 @@ export default {
       'set_userParams',
       'set_customGraphParams',
       'set_customGraphParamsClear',
-      'set_tagChart'
     ]),
 
     ...mapActions([
@@ -154,7 +167,6 @@ export default {
       'addGraph',
       'editUserParams',
       'findUserParams',
-        'getstackTagChart'
     ]),
       async querySearch(queryString, cb) {
           console.log(queryString)
@@ -217,7 +229,10 @@ export default {
 
     },
 
-    //todo 搜索按钮
+    setSearchContent(content){
+      this.searchInput=content;
+    },
+
     async searchGraph() {
       if(this.Modal==='Warehouse') {
         if (this.searchInput != '') {
@@ -232,11 +247,15 @@ export default {
           obj.style.cssText = 'float: left;width: 900px;margin-top: 20px;background: white; border-radius: 20px; height:580px;';
           this.$refs.publicGraph.changeSize();
           this.rightBlock = true;
+          this.PopularQuestion=true;
+
           this.rightChart=true;
           const _this=this;
           await this.$axios.all([
             this.$axios.get('/coinService/api/stackoverflow/findTargetNodesInfo/'+this.searchInput),
             this.$axios.get('/coinService/api/stackoverflow/findTargetNodesRelated/'+this.searchInput),
+            this.$axios.get('/coinService/api/stackoverflow/findTargetNodesDescription/'+this.searchInput),
+            this.$axios.get('/coinService/api/stackoverflow/findTargetQuestions/'+this.searchInput),
             this.$axios.get('/coinService/api/stackoverflow/findTargetNodesDescription/'+this.searchInput),
               this.$axios.get('/coinService/api/stackoverflow/findTargetNodesChart/'+this.searchInput)
           ])
@@ -244,6 +263,9 @@ export default {
               _this.SearchData.nodes=Resp1.data.content;
               _this.SearchData.links=Resp2.data.content;
               _this.SearchRes=Resp3.data.content;
+              for(let i=0;i<5;i++){
+                _this.MostPopQuestion.push(Resp4.data.content[i].name);
+              }
               _this.tagChart=Resp4.data.content;
             }));
           this.$refs.publicGraph.initGraph(_this.SearchData);
@@ -253,6 +275,36 @@ export default {
 
         }
       }
+    },
+
+    handleSelect(){
+
+    },
+    async querySearchAsync(queryString, cb) {
+      this.FuzzyRes=[];
+      if(queryString===""){
+        cb([{"SearchContent":"请输入搜索内容"}]);
+        return;
+      }
+      const _this=this;
+      await this.$axios.all([
+        this.$axios.get('/coinService/api/stackoverflow/findNodesFuzzy/'+queryString),
+      ])
+        .then(this.$axios.spread(function (Resp1) {
+          for(let i=0;i<Resp1.data.content.length;i++){
+            if(i>=5) {
+              break;
+            }
+            var temp={"SearchContent":"a"};
+            temp.SearchContent=Resp1.data.content[i];
+            _this.FuzzyRes.push(temp);
+          }
+        }));
+
+      clearTimeout(this.timeout);
+      this.timeout = setTimeout(() => {
+        cb(_this.FuzzyRes);
+      }, 1000 * Math.random());
     },
     clearSearch1() {
       this.searchInput = '';
@@ -266,6 +318,7 @@ export default {
         var obj = document.getElementById("public_Graph");
         obj.style.cssText = 'float: left;width: 1400px;margin-top: 20px;background: white; border-radius: 20px; height:580px;';
         this.$refs.publicGraph.ResetSize();
+
       }
     },
 
@@ -640,5 +693,10 @@ export default {
     height: 300px;
     background: white;
     border-radius: 15px;
+  }
+  .PopularQuestion{
+    width: 1000px;
+    float: left;
+    margin-top: 40px;
   }
 </style>
