@@ -5,6 +5,8 @@ import com.ac.coin.vo.ResponseVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.text.ParseException;
+
 @RestController
 @RequestMapping("/api/stackoverflow")
 @CrossOrigin
@@ -48,13 +50,18 @@ public class StackOverflowController {
     }
 
     @GetMapping("/findTargetQuestions/{name}")
-    public ResponseVO findTargetQuestions(@PathVariable("name") String name){
-        return ResponseVO.buildSuccess();//todo 本方法返回tag的最佳回答
+    public ResponseVO findTargetQuestions(@PathVariable("name") String name) {
+        return ResponseVO.buildSuccess(stackOverflowService.findHotQuestions(name));//返回最热五个问题
     }
 
     @GetMapping("/findTargetNodesChart/{name}")
     public ResponseVO findTargetNodesChart(@PathVariable("name") String name){
         return ResponseVO.buildSuccess(stackOverflowService.findTargetNodesChart(name)); //输入一个tagname，返回他的折线图信息
+    }
+
+    @GetMapping("/findNodesFuzzy/{name}")
+    public ResponseVO findNodesFuzzy(@PathVariable("name") String name){
+        return ResponseVO.buildSuccess(stackOverflowService.findNodesFuzzy(name));
     }
 
 }

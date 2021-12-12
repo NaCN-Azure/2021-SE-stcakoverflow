@@ -3,6 +3,7 @@ package com.ac.coin.dao;
 import com.ac.coin.po.*;
 import org.neo4j.driver.internal.value.RelationshipValue;
 
+import java.text.ParseException;
 import java.util.List;
 
 public interface StackOverflowDAO{
@@ -18,5 +19,9 @@ public interface StackOverflowDAO{
     List<RelationshipValue> findTargetSubRelation(String name);
 
     tagTrend findTargetNodesChart(String name);
+
+    List<Questions> findQuestions(String name);
+
+    List<String> findNodesFuzzy(String name);
 
 }

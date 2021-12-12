@@ -43,6 +43,9 @@ public interface TagsRepository extends Neo4jRepository<Tags,Long> {
     @Query("match (n:Tags)-[r:contains]->(m) where id(n)=$FatherId return m")
     List<Tags> findTargetSubNodesAll(@Param("FatherId") Long FatherId);
 
+    @Query("match (n:Tags) where n.name CONTAINS $name and exists (n.count) return n.name")
+    List<String> findByNameContains(@Param("name") String name);
+
 //    @Query("match (n:Tags)-[r:contains]->(m) where id(n)=$FatherId and exists(m.count_$year) return m order by toInt(m.count_$year) DESC limit 5")
 //    List<Tags> findRelatedHottestSubTagsByYear(@Param("FatherId") Long FatherId,@Param("year")int year);
 }

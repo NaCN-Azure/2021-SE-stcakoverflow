@@ -11,6 +11,7 @@ import org.neo4j.driver.internal.value.RelationshipValue;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.ParseException;
 import java.util.*;
 
 @Service
@@ -73,5 +74,15 @@ public class StackOverflowServiceImpl implements StackOverflowService {
     @Override
     public tagTrend findTargetNodesChart(String name){
         return stackOverflowDAO.findTargetNodesChart(name);
+    }
+
+    @Override
+    public List<Questions> findHotQuestions(String name) {
+        return stackOverflowDAO.findQuestions(name);
+    }
+
+    @Override
+    public List<String> findNodesFuzzy(String name){
+        return stackOverflowDAO.findNodesFuzzy(name);
     }
 }

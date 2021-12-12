@@ -2,8 +2,10 @@ package com.ac.coin.dao.impl;
 
 import com.ac.coin.dao.StackOverflowDAO;
 import com.ac.coin.dao.repository.ChartRepository;
+import com.ac.coin.dao.repository.QuesRepository;
 import com.ac.coin.dao.repository.StackRepository;
 import com.ac.coin.dao.repository.TagsRepository;
+import com.ac.coin.po.Questions;
 import com.ac.coin.po.tagTrend;
 import com.ac.coin.po.Tags;
 import org.neo4j.driver.internal.value.RelationshipValue;
@@ -11,9 +13,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 @Repository
 public class StackOverflowDAOImpl implements StackOverflowDAO {
@@ -23,6 +25,9 @@ public class StackOverflowDAOImpl implements StackOverflowDAO {
 
     @Autowired
     StackRepository stackRepository;
+
+    @Autowired
+    QuesRepository quesRepository;
 
     @Autowired
     ChartRepository chartRepository;
@@ -100,6 +105,39 @@ public class StackOverflowDAOImpl implements StackOverflowDAO {
 
     @Override
     public tagTrend findTargetNodesChart(String name){
-        return chartRepository.findByTagName(name);//我接不上了...
+        return chartRepository.findByTagName(name);
     }
+
+    @Override
+    public List<Questions> findQuestions(String name)  {
+        List<Questions> checklist = quesRepository.findQuestions(name);
+        List<Questions> results = new ArrayList<>();
+        HashMap<Questions,Double> hashMap = new HashMap<>();
+        for(Questions q:checklist){
+            int view = q.getViews();
+            int answers = q.getAnswers();
+            int votes = q.getVotes();
+            int year = 2021;
+            int create = q.getCreateDate();
+            Double rate =  ((Math.log10(view))*4+answers*votes/5)/(Math.pow((double) (year+create)/2,1.5));
+            hashMap.put(q,rate);
+        }
+        List<Map.Entry<Questions,Double>> list = new ArrayList<>(hashMap.entrySet());
+        Collections.sort(list, new Comparator<Map.Entry<Questions, Double>>() {
+            @Override
+            public int compare(Map.Entry<Questions, Double> o1, Map.Entry<Questions, Double> o2) {
+                return o1.getValue().compareTo(o2.getValue());
+            }
+        });
+        for(int i=0;i<=4;i++){
+            results.add(list.get(i).getKey());
+        }
+        return results;
+    }
+
+    @Override
+    public  List<String> findNodesFuzzy(String name){
+        return tagsRepository.findByNameContains(name);
+    }
+
 }

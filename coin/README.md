@@ -28,3 +28,10 @@
 
 ## 2021-12-6
 - 我解决了，新增接口findTargetNodesChart
+
+## 2021-12-12
+- 有必要说一下最后的几个方法内容
+  - findTargetNodesChart，输入一个tagname，返回他的折线图信息，这个私聊我我给你解释
+  - findTargetQuestions，输入一个tagname，返回其最热的五个问题，这个建议放在按节点搜索关系图谱的下面
+  - findNodesFuzzy，返回一个节点名称的模糊匹配，这个不知道你们前端可不可以在搜索框还没搜索时就调用该方法
+  
