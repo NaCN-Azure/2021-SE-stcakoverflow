@@ -221,6 +221,7 @@
           .attr("fill", function (d) {
             return d.color
           })
+          .on("click", this.nodeClick)
           .call(this.drag(this.simulation))
           .on('mouseover', function (d) {
             //当鼠标放在节点上时，高亮节点
@@ -398,7 +399,13 @@
           }));
         _this.initGraph(_this.testData);
         this.select_year=true;
-      }
+      },
+
+      //点击节点
+      nodeClick(d, i) {
+        this.$parent.setSearchContent(i.name);
+        this.$parent.searchGraph();
+      },
     },
   }
 </script>

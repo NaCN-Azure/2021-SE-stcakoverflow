@@ -4,14 +4,17 @@
       <img class="icon" src="https://lililizi.oss-cn-beijing.aliyuncs.com/3678be9a7b6d4697cc40a9b5428f738%28%E5%B7%B2%E5%8E%BB%E5%BA%95%29%20%281%29.jpg" height="30"
            width="30"/>
       <p class="title"><strong>Who Am I ？</strong></p>
-      <el-input
+      <el-autocomplete
         class="inline-input"
         v-model="searchInput"
+        :fetch-suggestions="querySearchAsync"
         placeholder="搜索"
+        value-key="SearchContent"
         clearable
-        @clear="clearSearch1">
+        @clear="clearSearch1"
+        @select="handleSelect">
         <el-button class="search_btn" slot="suffix" icon="el-icon-search" @click="searchGraph"></el-button>
-      </el-input>
+      </el-autocomplete>
       <Avatar></Avatar>
     </div>
 
@@ -121,6 +124,8 @@ export default {
       CreateChartVisible: false,
       // 图谱名
       input_chart: '',
+      SearchTimeout:  null,
+      FuzzyRes:[],
 
       update: true,
       updateFour: true,
@@ -183,7 +188,10 @@ export default {
 
     },
 
-    //todo 搜索按钮
+    setSearchContent(content){
+      this.searchInput=content;
+    },
+
     async searchGraph() {
       if(this.Modal==='Warehouse') {
         if (this.searchInput != '') {
@@ -214,6 +222,36 @@ export default {
         }
       }
     },
+
+    handleSelect(){
+
+    },
+    async querySearchAsync(queryString, cb) {
+      this.FuzzyRes=[];
+      if(queryString===""){
+        cb([{"SearchContent":"请输入搜索内容"}]);
+        return;
+      }
+      const _this=this;
+      await this.$axios.all([
+        this.$axios.get('/coinService/api/stackoverflow/findNodesFuzzy/'+queryString),
+      ])
+        .then(this.$axios.spread(function (Resp1) {
+          for(let i=0;i<Resp1.data.content.length;i++){
+            if(i>=5) {
+              break;
+            }
+            var temp={"SearchContent":"a"};
+            temp.SearchContent=Resp1.data.content[i];
+            _this.FuzzyRes.push(temp);
+          }
+        }));
+
+      clearTimeout(this.timeout);
+      this.timeout = setTimeout(() => {
+        cb(_this.FuzzyRes);
+      }, 1000 * Math.random());
+    },
     clearSearch1() {
       this.searchInput = '';
       if(this.Modal==='Warehouse') {
@@ -221,10 +259,12 @@ export default {
         this.$refs.GraphCard.resetbolSearch();
       }
       else{
-        this.rightBlock=false;
-        var obj = document.getElementById("public_Graph");
-        obj.style.cssText = 'float: left;width: 1400px;margin-top: 20px;background: white; border-radius: 20px; height:580px;';
-        this.$refs.publicGraph.ResetSize();
+        if(this.rightBlock===true){
+          this.rightBlock=false;
+          var obj = document.getElementById("public_Graph");
+          obj.style.cssText = 'float: left;width: 1400px;margin-top: 20px;background: white; border-radius: 20px; height:580px;';
+          this.$refs.publicGraph.ResetSize();
+        }
       }
     },
 
