@@ -4,14 +4,16 @@
       <img class="icon" src="https://lililizi.oss-cn-beijing.aliyuncs.com/3678be9a7b6d4697cc40a9b5428f738%28%E5%B7%B2%E5%8E%BB%E5%BA%95%29%20%281%29.jpg" height="30"
            width="30"/>
       <p class="title"><strong>Who Am I ？</strong></p>
-      <el-input
+      <el-autocomplete
         class="inline-input"
         v-model="searchInput"
-        placeholder="搜索"
+        :fetch-suggestions="querySearch"
+        placeholder="搜索标签"
+        :trigger-on-focus="false"
         clearable
         @clear="clearSearch1">
         <el-button class="search_btn" slot="suffix" icon="el-icon-search" @click="searchGraph"></el-button>
-      </el-input>
+      </el-autocomplete>
       <Avatar></Avatar>
     </div>
 
@@ -73,6 +75,9 @@
           <strong>{{SearchRes.name}}</strong>
           <p>{{SearchRes.excerpt}}</p>
         </div>
+        <div id="QuestionChart" class="RightChart" v-show="rightChart">
+
+        </div>
 
         <div class="body" v-show="this.Modal==='Warehouse'">
           <GraphCard v-if="update" style="margin-top: 15px;margin-bottom: 20px;" ref="GraphCard"></GraphCard>
@@ -89,6 +94,7 @@ import {mapGetters, mapMutations, mapActions} from 'vuex'
 import Avatar from '../Graphs/Components/Avatar'
 import GraphCard from './graphCard'
 import Graph from './Component/Graph.vue'
+import * as echarts from 'echarts';
 
 export default {
   name: "home",
@@ -101,6 +107,7 @@ export default {
     ...mapGetters([
       'userParams',
       'userGraphList',
+
     ])
   },
   async mounted() {
@@ -112,6 +119,7 @@ export default {
   data() {
     return {
       rightBlock:false,
+      rightChart:false,
       bolWarehouseBtn: false,
       bolPublicGraph: true,
       searchInput: '',
@@ -130,6 +138,7 @@ export default {
         "links": []
       },
       SearchRes:{},
+      tagChart:null
     }
   },
   methods: {
@@ -137,6 +146,7 @@ export default {
       'set_userParams',
       'set_customGraphParams',
       'set_customGraphParamsClear',
+      'set_tagChart'
     ]),
 
     ...mapActions([
@@ -144,8 +154,31 @@ export default {
       'addGraph',
       'editUserParams',
       'findUserParams',
+        'getstackTagChart'
     ]),
+      async querySearch(queryString, cb) {
+          console.log(queryString)
+          var results=[]
+          await this.$axios.all([
+              this.$axios.get('/coinService/api/stackoverflow/findNodesFuzzy/'+queryString),
 
+          ])
+              .then(this.$axios.spread(function (Resp1) {
+
+                  let fuzzy=Resp1.data.content.slice(0,20)
+                  let results=[]
+                  for(let i=0;i<fuzzy.length;i++){
+                      results.push({'value':fuzzy[i]})
+                  }
+                  cb(results);
+
+
+              }));
+
+
+          // 调用 callback 返回建议列表的数据
+
+      },
 
     PublicGraph() {
       if (this.bolPublicGraph === 'true') return;
@@ -176,6 +209,7 @@ export default {
       obj4.style.cssText = 'float: left; font-size: 10px;height: 15px;margin-left: 5px;color: #000000;';
       if(this.rightBlock===true){
         this.rightBlock=false;
+        this.rightChart=false;
         var obj = document.getElementById("public_Graph");
         obj.style.cssText = 'float: left;width: 1400px;margin-top: 20px;background: white; border-radius: 20px; height:580px;';
         this.$refs.publicGraph.ResetSize();
@@ -198,19 +232,25 @@ export default {
           obj.style.cssText = 'float: left;width: 900px;margin-top: 20px;background: white; border-radius: 20px; height:580px;';
           this.$refs.publicGraph.changeSize();
           this.rightBlock = true;
-
+          this.rightChart=true;
           const _this=this;
           await this.$axios.all([
             this.$axios.get('/coinService/api/stackoverflow/findTargetNodesInfo/'+this.searchInput),
             this.$axios.get('/coinService/api/stackoverflow/findTargetNodesRelated/'+this.searchInput),
-            this.$axios.get('/coinService/api/stackoverflow/findTargetNodesDescription/'+this.searchInput)
+            this.$axios.get('/coinService/api/stackoverflow/findTargetNodesDescription/'+this.searchInput),
+              this.$axios.get('/coinService/api/stackoverflow/findTargetNodesChart/'+this.searchInput)
           ])
-            .then(this.$axios.spread(function (Resp1, Resp2,Resp3) {
+            .then(this.$axios.spread(function (Resp1, Resp2,Resp3,Resp4) {
               _this.SearchData.nodes=Resp1.data.content;
               _this.SearchData.links=Resp2.data.content;
               _this.SearchRes=Resp3.data.content;
+              _this.tagChart=Resp4.data.content;
             }));
           this.$refs.publicGraph.initGraph(_this.SearchData);
+          this.getstackTagChart(this.searchInput)
+          this.createChart()
+
+
         }
       }
     },
@@ -222,6 +262,7 @@ export default {
       }
       else{
         this.rightBlock=false;
+        this.rightChart=false;
         var obj = document.getElementById("public_Graph");
         obj.style.cssText = 'float: left;width: 1400px;margin-top: 20px;background: white; border-radius: 20px; height:580px;';
         this.$refs.publicGraph.ResetSize();
@@ -271,6 +312,84 @@ export default {
         this.updateFour = true
       })
     },
+    createChart(){
+        var chartDom = document.getElementById('QuestionChart');
+        var myChart = echarts.init(chartDom);
+        var option;
+        const valueList = [];
+        console.log("this.tagchart")
+        console.log(this.tagChart)
+        valueList.push.apply(valueList,this.tagChart['year2015'])
+        valueList.push.apply(valueList,this.tagChart['year2016'])
+        valueList.push.apply(valueList,this.tagChart['year2017'])
+        valueList.push.apply(valueList,this.tagChart['year2018'])
+        valueList.push.apply(valueList,this.tagChart['year2019'])
+        valueList.push.apply(valueList,this.tagChart['year2020'])
+        // valueList.push.apply(valueList,this.tagChart['year2021'])
+        const dataList=[]
+        const temp=[1,2,3,0,0,0,0,0,0]
+        for(let i=0;i<6;i++){
+            let a=2015+i
+            dataList.push(a)
+            for(let j=2;j<=12;j++){
+                dataList.push(a+'年'+j+'月')
+            }
+        }
+        dataList.push(2021)
+        option = {
+            // Make gradient line here
+            visualMap: [
+                {
+                    show: false,
+                    type: 'continuous',
+                    seriesIndex: 1,
+                    dimension: 0,
+                    min: 0,
+                    max: 71
+                }
+            ],
+            grid: [
+                {
+                    top: '30%',
+                    left: '14%',
+                    width: '350px',
+                    height: '150px'
+                }
+            ],
+            title: [
+                {
+                    left: 'center',
+                    text: 'Tag Trend',
+                    top: '4%'
+                },
+            ],
+            tooltip: {
+                trigger: 'axis'
+            },
+            xAxis: [
+                {
+                    data: dataList,
+                    axisLabel: {
+                        interval:11
+                    },
+                },
+            ],
+            yAxis: [
+                {
+                    name:'Question Count'
+                },
+            ],
+            series: [
+                {
+                    type: 'line',
+                    showSymbol: false,
+                    data: valueList
+                },
+
+            ]
+        };
+        myChart.setOption(option);
+    }
   },
 }
 </script>
@@ -503,11 +622,22 @@ export default {
   }
 
   .RightBlock{
-    margin-top: 50px;
-    margin-left: 50px;
+    margin-top: 20px;
+    margin-left: 20px;
     float: left;
-    width: 400px;
-    height: 500px;
+    width: 450px;
+    height: 250px;
+    background: white;
+    border-radius: 15px;
+  }
+  .RightChart{
+    margin-top: 25px;
+    margin-left: 20px;
+    padding: 10px 15px;
+    box-sizing: border-box;
+    float: left;
+    width: 450px;
+    height: 300px;
     background: white;
     border-radius: 15px;
   }
