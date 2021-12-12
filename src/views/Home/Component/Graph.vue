@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-select v-show="select_year" class="my-el-select" v-model="value_year" placeholder="    年份" @change="change" style="width: 90px;right: 0;margin-top: 10px;margin-right: 15px;float:right; z-index:5;">
+    <el-select v-show="select_year" class="my-el-select" v-model="value_year" placeholder="所有年份" @change="change" style="width: 103px;right: 0;margin-top: 10px;margin-right: 15px;float:right; z-index:5;">
       <el-option
         v-for="item in options_year"
         :key="item.value"
@@ -46,6 +46,9 @@
         }, {
           value: '2015',
           label: '2015年'
+        }, {
+          value: '年份',
+          label: '所有年份'
         }],
         value_year: '',
 
@@ -365,6 +368,19 @@
         console.log(value);
         this.removeSvg();
         const _this=this;
+        if(value==="年份"){
+          await this.$axios.all([
+            this.$axios.get('/coinService/api/stackoverflow/findStackNodes'),
+            this.$axios.get('/coinService/api/stackoverflow/findStackRelations')
+          ])
+            .then(this.$axios.spread(function (Resp1, Resp2) {
+              _this.testData.nodes=Resp1.data.content;
+              _this.testData.links=Resp2.data.content;
+            }));
+          _this.initGraph(_this.testData);
+          return;
+        }
+
         await this.$axios.all([
           this.$axios.get('/coinService/api/stackoverflow/findStackNodesYear/'+value),
           this.$axios.get('/coinService/api/stackoverflow/findStackRelationsYear/'+value)

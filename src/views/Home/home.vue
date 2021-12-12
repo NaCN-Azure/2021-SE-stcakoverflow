@@ -77,6 +77,15 @@
           <p>{{SearchRes.excerpt}}</p>
         </div>
 
+        <div class="PopularQuestion" v-show="PopularQuestion">
+          <strong>Five Most Hot Question</strong>
+          <p>{{MostPopQuestion[0]}}</p>
+          <p>{{MostPopQuestion[1]}}</p>
+          <p>{{MostPopQuestion[2]}}</p>
+          <p>{{MostPopQuestion[3]}}</p>
+          <p>{{MostPopQuestion[4]}}</p>
+        </div>
+
         <div class="body" v-show="this.Modal==='Warehouse'">
           <GraphCard v-if="update" style="margin-top: 15px;margin-bottom: 20px;" ref="GraphCard"></GraphCard>
         </div>
@@ -115,6 +124,7 @@ export default {
   data() {
     return {
       rightBlock:false,
+      PopularQuestion:false,
       bolWarehouseBtn: false,
       bolPublicGraph: true,
       searchInput: '',
@@ -135,6 +145,7 @@ export default {
         "links": []
       },
       SearchRes:{},
+      MostPopQuestion:[],
     }
   },
   methods: {
@@ -206,17 +217,22 @@ export default {
           obj.style.cssText = 'float: left;width: 900px;margin-top: 20px;background: white; border-radius: 20px; height:580px;';
           this.$refs.publicGraph.changeSize();
           this.rightBlock = true;
+          this.PopularQuestion=true;
 
           const _this=this;
           await this.$axios.all([
             this.$axios.get('/coinService/api/stackoverflow/findTargetNodesInfo/'+this.searchInput),
             this.$axios.get('/coinService/api/stackoverflow/findTargetNodesRelated/'+this.searchInput),
-            this.$axios.get('/coinService/api/stackoverflow/findTargetNodesDescription/'+this.searchInput)
+            this.$axios.get('/coinService/api/stackoverflow/findTargetNodesDescription/'+this.searchInput),
+            this.$axios.get('/coinService/api/stackoverflow/findTargetQuestions/'+this.searchInput),
           ])
-            .then(this.$axios.spread(function (Resp1, Resp2,Resp3) {
+            .then(this.$axios.spread(function (Resp1, Resp2,Resp3,Resp4) {
               _this.SearchData.nodes=Resp1.data.content;
               _this.SearchData.links=Resp2.data.content;
               _this.SearchRes=Resp3.data.content;
+              for(let i=0;i<5;i++){
+                _this.MostPopQuestion.push(Resp4.data.content[i].name);
+              }
             }));
           this.$refs.publicGraph.initGraph(_this.SearchData);
         }
@@ -261,6 +277,7 @@ export default {
       else{
         if(this.rightBlock===true){
           this.rightBlock=false;
+          this.PopularQuestion=false;
           var obj = document.getElementById("public_Graph");
           obj.style.cssText = 'float: left;width: 1400px;margin-top: 20px;background: white; border-radius: 20px; height:580px;';
           this.$refs.publicGraph.ResetSize();
@@ -550,5 +567,10 @@ export default {
     height: 500px;
     background: white;
     border-radius: 15px;
+  }
+  .PopularQuestion{
+    width: 1000px;
+    float: left;
+    margin-top: 40px;
   }
 </style>
