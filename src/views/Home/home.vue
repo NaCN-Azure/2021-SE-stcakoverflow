@@ -78,7 +78,7 @@
         </div>
 
         <div class="PopularQuestion" v-show="PopularQuestion">
-          <strong>Five Most Hot Question</strong>
+          <strong>Five Most Hot Question About {{searchInput}}</strong>
           <p>{{MostPopQuestion[0]}}</p>
           <p>{{MostPopQuestion[1]}}</p>
           <p>{{MostPopQuestion[2]}}</p>
@@ -182,6 +182,7 @@ export default {
       this.Modal = "Warehouse";
       this.bolWarehouseBtn = true;
       this.bolPublicGraph = false;
+      this.PopularQuestion=false;
       var obj1 = document.getElementById("btn_W");
       obj1.style.cssText = 'background-image: url("https://lililizi.oss-cn-beijing.aliyuncs.com/a_%E8%BD%AF%E5%B7%A53/%E5%9B%BE%E7%89%8711.png") ;background-size:55px;margin-left: 0;margin-top:4px;height:65px;width:65px';
       var obj2 = document.getElementById("btn_P");
@@ -230,7 +231,8 @@ export default {
               _this.SearchData.nodes=Resp1.data.content;
               _this.SearchData.links=Resp2.data.content;
               _this.SearchRes=Resp3.data.content;
-              for(let i=0;i<5;i++){
+              _this.MostPopQuestion=[];
+              for(let i=0;i<Resp4.data.content.length;i++){
                 _this.MostPopQuestion.push(Resp4.data.content[i].name);
               }
             }));
