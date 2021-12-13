@@ -77,6 +77,10 @@
           <p>{{SearchRes.excerpt}}</p>
         </div>
 
+        <div id="QuestionChart" class="RightChart" v-show="rightChart">
+
+        </div>
+
         <div class="PopularQuestion" v-show="PopularQuestion">
           <strong>Five Most Hot Question</strong>
           <p>{{MostPopQuestion[0]}}</p>
@@ -85,9 +89,7 @@
           <p>{{MostPopQuestion[3]}}</p>
           <p>{{MostPopQuestion[4]}}</p>
         </div>
-        <div id="QuestionChart" class="RightChart" v-show="rightChart">
 
-        </div>
 
         <div class="body" v-show="this.Modal==='Warehouse'">
           <GraphCard v-if="update" style="margin-top: 15px;margin-bottom: 20px;" ref="GraphCard"></GraphCard>
@@ -151,7 +153,7 @@ export default {
         "links": []
       },
       SearchRes:{},
-      tagChart:null
+      tagChart:null,
       MostPopQuestion:[],
     }
   },
@@ -168,29 +170,7 @@ export default {
       'editUserParams',
       'findUserParams',
     ]),
-      async querySearch(queryString, cb) {
-          console.log(queryString)
-          var results=[]
-          await this.$axios.all([
-              this.$axios.get('/coinService/api/stackoverflow/findNodesFuzzy/'+queryString),
 
-          ])
-              .then(this.$axios.spread(function (Resp1) {
-
-                  let fuzzy=Resp1.data.content.slice(0,20)
-                  let results=[]
-                  for(let i=0;i<fuzzy.length;i++){
-                      results.push({'value':fuzzy[i]})
-                  }
-                  cb(results);
-
-
-              }));
-
-
-          // 调用 callback 返回建议列表的数据
-
-      },
 
     PublicGraph() {
       if (this.bolPublicGraph === 'true') return;
@@ -256,20 +236,19 @@ export default {
             this.$axios.get('/coinService/api/stackoverflow/findTargetNodesRelated/'+this.searchInput),
             this.$axios.get('/coinService/api/stackoverflow/findTargetNodesDescription/'+this.searchInput),
             this.$axios.get('/coinService/api/stackoverflow/findTargetQuestions/'+this.searchInput),
-            this.$axios.get('/coinService/api/stackoverflow/findTargetNodesDescription/'+this.searchInput),
+
               this.$axios.get('/coinService/api/stackoverflow/findTargetNodesChart/'+this.searchInput)
           ])
-            .then(this.$axios.spread(function (Resp1, Resp2,Resp3,Resp4) {
+            .then(this.$axios.spread(function (Resp1, Resp2,Resp3,Resp4,Resp5) {
               _this.SearchData.nodes=Resp1.data.content;
               _this.SearchData.links=Resp2.data.content;
               _this.SearchRes=Resp3.data.content;
               for(let i=0;i<5;i++){
                 _this.MostPopQuestion.push(Resp4.data.content[i].name);
               }
-              _this.tagChart=Resp4.data.content;
+              _this.tagChart=Resp5.data.content;
             }));
           this.$refs.publicGraph.initGraph(_this.SearchData);
-          this.getstackTagChart(this.searchInput)
           this.createChart()
 
 
