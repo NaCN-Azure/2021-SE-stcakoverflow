@@ -294,11 +294,14 @@ export default {
         this.$refs.GraphCard.resetbolSearch();
       }
       else{
-        this.rightBlock=false;
-        this.rightChart=false;
-        var obj = document.getElementById("public_Graph");
-        obj.style.cssText = 'float: left;width: 1400px;margin-top: 20px;background: white; border-radius: 20px; height:580px;';
-        this.$refs.publicGraph.ResetSize();
+        if(this.rightBlock===true) {
+          this.PopularQuestion = false;
+          this.rightBlock = false;
+          this.rightChart = false;
+          var obj = document.getElementById("public_Graph");
+          obj.style.cssText = 'float: left;width: 1400px;margin-top: 20px;background: white; border-radius: 20px; height:580px;';
+          this.$refs.publicGraph.ResetSize();
+        }
 
       }
     },
