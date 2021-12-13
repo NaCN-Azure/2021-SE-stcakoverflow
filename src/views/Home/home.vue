@@ -77,6 +77,10 @@
           <p>{{SearchRes.excerpt}}</p>
         </div>
 
+        <div id="QuestionChart" class="RightChart" v-show="rightChart">
+
+        </div>
+
         <div class="PopularQuestion" v-show="PopularQuestion">
           <strong>Five Most Hot Question About {{searchInput}}</strong>
           <p>{{MostPopQuestion[0]}}</p>
@@ -85,6 +89,7 @@
           <p>{{MostPopQuestion[3]}}</p>
           <p>{{MostPopQuestion[4]}}</p>
         </div>
+
 
         <div class="body" v-show="this.Modal==='Warehouse'">
           <GraphCard v-if="update" style="margin-top: 15px;margin-bottom: 20px;" ref="GraphCard"></GraphCard>
@@ -101,6 +106,7 @@ import {mapGetters, mapMutations, mapActions} from 'vuex'
 import Avatar from '../Graphs/Components/Avatar'
 import GraphCard from './graphCard'
 import Graph from './Component/Graph.vue'
+import * as echarts from 'echarts';
 
 export default {
   name: "home",
@@ -113,6 +119,7 @@ export default {
     ...mapGetters([
       'userParams',
       'userGraphList',
+
     ])
   },
   async mounted() {
@@ -125,6 +132,7 @@ export default {
     return {
       rightBlock:false,
       PopularQuestion:false,
+      rightChart:false,
       bolWarehouseBtn: false,
       bolPublicGraph: true,
       searchInput: '',
@@ -145,6 +153,7 @@ export default {
         "links": []
       },
       SearchRes:{},
+      tagChart:null,
       MostPopQuestion:[],
     }
   },
@@ -193,6 +202,7 @@ export default {
       obj4.style.cssText = 'float: left; font-size: 10px;height: 15px;margin-left: 5px;color: #000000;';
       if(this.rightBlock===true){
         this.rightBlock=false;
+        this.rightChart=false;
         var obj = document.getElementById("public_Graph");
         obj.style.cssText = 'float: left;width: 1400px;margin-top: 20px;background: white; border-radius: 20px; height:580px;';
         this.$refs.publicGraph.ResetSize();
@@ -220,14 +230,17 @@ export default {
           this.rightBlock = true;
           this.PopularQuestion=true;
 
+          this.rightChart=true;
           const _this=this;
           await this.$axios.all([
             this.$axios.get('/coinService/api/stackoverflow/findTargetNodesInfo/'+this.searchInput),
             this.$axios.get('/coinService/api/stackoverflow/findTargetNodesRelated/'+this.searchInput),
             this.$axios.get('/coinService/api/stackoverflow/findTargetNodesDescription/'+this.searchInput),
             this.$axios.get('/coinService/api/stackoverflow/findTargetQuestions/'+this.searchInput),
+
+              this.$axios.get('/coinService/api/stackoverflow/findTargetNodesChart/'+this.searchInput)
           ])
-            .then(this.$axios.spread(function (Resp1, Resp2,Resp3,Resp4) {
+            .then(this.$axios.spread(function (Resp1, Resp2,Resp3,Resp4,Resp5) {
               _this.SearchData.nodes=Resp1.data.content;
               _this.SearchData.links=Resp2.data.content;
               _this.SearchRes=Resp3.data.content;
@@ -235,8 +248,12 @@ export default {
               for(let i=0;i<Resp4.data.content.length;i++){
                 _this.MostPopQuestion.push(Resp4.data.content[i].name);
               }
+              _this.tagChart=Resp5.data.content;
             }));
           this.$refs.publicGraph.initGraph(_this.SearchData);
+          this.createChart()
+
+
         }
       }
     },
@@ -277,13 +294,12 @@ export default {
         this.$refs.GraphCard.resetbolSearch();
       }
       else{
-        if(this.rightBlock===true){
-          this.rightBlock=false;
-          this.PopularQuestion=false;
-          var obj = document.getElementById("public_Graph");
-          obj.style.cssText = 'float: left;width: 1400px;margin-top: 20px;background: white; border-radius: 20px; height:580px;';
-          this.$refs.publicGraph.ResetSize();
-        }
+        this.rightBlock=false;
+        this.rightChart=false;
+        var obj = document.getElementById("public_Graph");
+        obj.style.cssText = 'float: left;width: 1400px;margin-top: 20px;background: white; border-radius: 20px; height:580px;';
+        this.$refs.publicGraph.ResetSize();
+
       }
     },
 
@@ -330,6 +346,84 @@ export default {
         this.updateFour = true
       })
     },
+    createChart(){
+        var chartDom = document.getElementById('QuestionChart');
+        var myChart = echarts.init(chartDom);
+        var option;
+        const valueList = [];
+        console.log("this.tagchart")
+        console.log(this.tagChart)
+        valueList.push.apply(valueList,this.tagChart['year2015'])
+        valueList.push.apply(valueList,this.tagChart['year2016'])
+        valueList.push.apply(valueList,this.tagChart['year2017'])
+        valueList.push.apply(valueList,this.tagChart['year2018'])
+        valueList.push.apply(valueList,this.tagChart['year2019'])
+        valueList.push.apply(valueList,this.tagChart['year2020'])
+        // valueList.push.apply(valueList,this.tagChart['year2021'])
+        const dataList=[]
+        const temp=[1,2,3,0,0,0,0,0,0]
+        for(let i=0;i<6;i++){
+            let a=2015+i
+            dataList.push(a)
+            for(let j=2;j<=12;j++){
+                dataList.push(a+'年'+j+'月')
+            }
+        }
+        dataList.push(2021)
+        option = {
+            // Make gradient line here
+            visualMap: [
+                {
+                    show: false,
+                    type: 'continuous',
+                    seriesIndex: 1,
+                    dimension: 0,
+                    min: 0,
+                    max: 71
+                }
+            ],
+            grid: [
+                {
+                    top: '30%',
+                    left: '14%',
+                    width: '350px',
+                    height: '150px'
+                }
+            ],
+            title: [
+                {
+                    left: 'center',
+                    text: 'Tag Trend',
+                    top: '4%'
+                },
+            ],
+            tooltip: {
+                trigger: 'axis'
+            },
+            xAxis: [
+                {
+                    data: dataList,
+                    axisLabel: {
+                        interval:11
+                    },
+                },
+            ],
+            yAxis: [
+                {
+                    name:'Question Count'
+                },
+            ],
+            series: [
+                {
+                    type: 'line',
+                    showSymbol: false,
+                    data: valueList
+                },
+
+            ]
+        };
+        myChart.setOption(option);
+    }
   },
 }
 </script>
@@ -562,11 +656,22 @@ export default {
   }
 
   .RightBlock{
-    margin-top: 50px;
-    margin-left: 50px;
+    margin-top: 20px;
+    margin-left: 20px;
     float: left;
-    width: 400px;
-    height: 500px;
+    width: 450px;
+    height: 250px;
+    background: white;
+    border-radius: 15px;
+  }
+  .RightChart{
+    margin-top: 25px;
+    margin-left: 20px;
+    padding: 10px 15px;
+    box-sizing: border-box;
+    float: left;
+    width: 450px;
+    height: 300px;
     background: white;
     border-radius: 15px;
   }

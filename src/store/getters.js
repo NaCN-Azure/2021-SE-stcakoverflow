@@ -59,6 +59,7 @@ const getters = {
   stacknodeClickVisible: state => state.stackGraph.nodeClickVisible,
   stackrelationClickVisible: state => state.stackGraph.relationClickVisible,
   stackstockCardVisible: state => state.stackGraph.stockCardVisible,
+  tagChart: state => state.stackGraph.tagChart,
 }
 
 export default getters

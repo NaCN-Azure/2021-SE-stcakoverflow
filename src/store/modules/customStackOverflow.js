@@ -1,6 +1,7 @@
 import {
   findStackNodesAPI,
   findStackRelationsAPI,
+  findTargetNodesChartAPI
 } from '../../api/customStackOverflow'
 
 const stackGraph = {
@@ -19,6 +20,7 @@ const stackGraph = {
     searchString: '',
     fuzzyMatchingOutComeList: [],
     showModel: '',
+    tagChart:Object,
     graphMovable: true,
     searchBoardVisible: false,
     numericalVisible: false,
@@ -110,6 +112,9 @@ const stackGraph = {
     },
     set_stockCardVisible: function (state, data) {
       state.stockCardVisible = data
+    },
+    set_tagChart: function (state, data) {
+      state.tagChart= data
     }
   },
   actions: {
@@ -122,6 +127,14 @@ const stackGraph = {
           nodes: nodeRes.data.content,
           links: linkRes.data.content,
         })
+      }
+    },
+    getstackTagChart: async ({commit, state},name) => {
+      const res = await findTargetNodesChartAPI(name)
+      if (res) {
+        console.log('tagChart')
+        console.log(res.data.content)
+        commit('set_tagChart', res.data.content)
       }
     },
   },

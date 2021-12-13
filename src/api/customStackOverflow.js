@@ -18,3 +18,10 @@ export function findStackRelationsAPI() {
   })
 }
 
+export function findTargetNodesChartAPI(name) {
+  return axios({
+    url: `${api.customStackOverflowPre}/findTargetNodesChart/${name}`,
+    method: 'GET',
+  })
+}
+
