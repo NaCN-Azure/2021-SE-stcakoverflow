@@ -34,33 +34,33 @@ public class StackOverflowController {
         return ResponseVO.buildSuccess(stackOverflowService.findDefaultStackRelation(year));
     }
 
-    @GetMapping("/findTargetNodesInfo/{name}")
-    public ResponseVO findTargetNodesInfo(@PathVariable("name") String name){
+    @GetMapping("/findTargetNodesInfo")
+    public ResponseVO findTargetNodesInfo(@RequestParam("name") String name){
         return ResponseVO.buildSuccess(stackOverflowService.findTargetSubTag(name));//本方法返回单独tag(给图谱展示用的)及其子节点
     }
 
-    @GetMapping("/findTargetNodesDescription/{name}")
-    public ResponseVO findTargetNodesDescription(@PathVariable("name") String name){
+    @GetMapping("/findTargetNodesDescription")
+    public ResponseVO findTargetNodesDescription(@RequestParam("name") String name){
         return ResponseVO.buildSuccess(stackOverflowService.findTargetTag(name));//本方法返回单独tag介绍（返回一个完整的tag类型，前端可能需要新定义方法）
     }
 
-    @GetMapping("/findTargetNodesRelated/{name}")
-    public ResponseVO findTargetNodesRelated(@PathVariable("name") String name){
+    @GetMapping("/findTargetNodesRelated")
+    public ResponseVO findTargetNodesRelated(@RequestParam("name") String name){
         return ResponseVO.buildSuccess(stackOverflowService.findTargetSubRelation(name));//本方法返回单独tag及其附属关系(给图谱展示用的)
     }
 
-    @GetMapping("/findTargetQuestions/{name}")
-    public ResponseVO findTargetQuestions(@PathVariable("name") String name) {
+    @GetMapping("/findTargetQuestions")
+    public ResponseVO findTargetQuestions(@RequestParam("name") String name) {
         return ResponseVO.buildSuccess(stackOverflowService.findHotQuestions(name));//返回最热五个问题
     }
 
-    @GetMapping("/findTargetNodesChart/{name}")
-    public ResponseVO findTargetNodesChart(@PathVariable("name") String name){
+    @GetMapping("/findTargetNodesChart")
+    public ResponseVO findTargetNodesChart(@RequestParam("name") String name){
         return ResponseVO.buildSuccess(stackOverflowService.findTargetNodesChart(name)); //输入一个tagname，返回他的折线图信息
     }
 
-    @GetMapping("/findNodesFuzzy/{name}")
-    public ResponseVO findNodesFuzzy(@PathVariable("name") String name){
+    @GetMapping("/findNodesFuzzy")
+    public ResponseVO findNodesFuzzy(@RequestParam("name") String name){
         return ResponseVO.buildSuccess(stackOverflowService.findNodesFuzzy(name));
     }
 
