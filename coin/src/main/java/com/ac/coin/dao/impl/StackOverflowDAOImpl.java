@@ -112,6 +112,9 @@ public class StackOverflowDAOImpl implements StackOverflowDAO {
     public List<Questions> findQuestions(String name)  {
         List<Questions> checklist = quesRepository.findQuestions(name);
         List<Questions> results = new ArrayList<>();
+        if(checklist.size()==0){
+            return results;
+        }
         HashMap<Questions,Double> hashMap = new HashMap<>();
         for(Questions q:checklist){
             int view = q.getViews();
@@ -129,7 +132,8 @@ public class StackOverflowDAOImpl implements StackOverflowDAO {
                 return o1.getValue().compareTo(o2.getValue());
             }
         });
-        for(int i=0;i<=4;i++){
+        int x= Math.min(list.size()-1, 4);
+        for(int i=0;i<=x;i++){
             results.add(list.get(i).getKey());
         }
         return results;
