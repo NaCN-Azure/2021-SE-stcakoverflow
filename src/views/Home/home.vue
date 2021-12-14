@@ -233,12 +233,12 @@ export default {
           this.rightChart=true;
           const _this=this;
           await this.$axios.all([
-            this.$axios.get('/coinService/api/stackoverflow/findTargetNodesInfo/'+this.searchInput),
-            this.$axios.get('/coinService/api/stackoverflow/findTargetNodesRelated/'+this.searchInput),
-            this.$axios.get('/coinService/api/stackoverflow/findTargetNodesDescription/'+this.searchInput),
-            this.$axios.get('/coinService/api/stackoverflow/findTargetQuestions/'+this.searchInput),
+            this.$axios.get('/coinService/api/stackoverflow/findTargetNodesInfo',{ params: { name: this.searchInput } }),
+            this.$axios.get('/coinService/api/stackoverflow/findTargetNodesRelated',{ params: { name: this.searchInput } }),
+            this.$axios.get('/coinService/api/stackoverflow/findTargetNodesDescription',{ params: { name: this.searchInput } }),
+            this.$axios.get('/coinService/api/stackoverflow/findTargetQuestions',{ params: { name: this.searchInput } }),
 
-              this.$axios.get('/coinService/api/stackoverflow/findTargetNodesChart/'+this.searchInput)
+              this.$axios.get('/coinService/api/stackoverflow/findTargetNodesChart',{ params: { name: this.searchInput } })
           ])
             .then(this.$axios.spread(function (Resp1, Resp2,Resp3,Resp4,Resp5) {
               _this.SearchData.nodes=Resp1.data.content;
@@ -268,8 +268,9 @@ export default {
         return;
       }
       const _this=this;
+      console.log(queryString)
       await this.$axios.all([
-        this.$axios.get('/coinService/api/stackoverflow/findNodesFuzzy/'+queryString),
+        this.$axios.get('/coinService/api/stackoverflow/findNodesFuzzy',{ params: { name: queryString } }),
       ])
         .then(this.$axios.spread(function (Resp1) {
           for(let i=0;i<Resp1.data.content.length;i++){
