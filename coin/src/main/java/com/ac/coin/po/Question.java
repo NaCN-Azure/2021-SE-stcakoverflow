@@ -21,6 +21,16 @@ public class Question {
 
     private String links;
 
+    private double rate;
+
+    public double getRate() {
+        return rate;
+    }
+
+    public void setRate(double rate) {
+        this.rate = rate;
+    }
+
     public String getVotes() {
         return votes;
     }

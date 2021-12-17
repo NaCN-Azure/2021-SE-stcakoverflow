@@ -152,6 +152,7 @@ public class StackOverflowDAOImpl implements StackOverflowDAO {
             int year = 2021;
             int create = q.getCreate_date();
             Double rate =  ((Math.log10(view))*4+answers*votes/5)/(Math.pow((double) (year+create)/2,1.5));
+            q.setRate(rate);
             hashMap.put(q,rate);
         }
 
@@ -159,7 +160,7 @@ public class StackOverflowDAOImpl implements StackOverflowDAO {
         Collections.sort(list, new Comparator<Map.Entry<Question, Double>>() {
             @Override
             public int compare(Map.Entry<Question, Double> o1, Map.Entry<Question, Double> o2) {
-                return o1.getValue().compareTo(o2.getValue());
+                return o2.getValue().compareTo(o1.getValue());
             }
         });
         int x= Math.min(list.size()-1, 4);
