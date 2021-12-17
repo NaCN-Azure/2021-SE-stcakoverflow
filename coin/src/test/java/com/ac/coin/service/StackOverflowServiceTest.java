@@ -168,29 +168,29 @@ class StackOverflowServiceTest {
 
     }
 
-    @Test
-    void findHotQuestions(){
-        List<String> nameList=new ArrayList<>();
-        nameList.add("java");
-        nameList.add("python");
-        nameList.add("c++");
-        List<Questions> questions;
-        for(int i=0;i<nameList.size();i++){
-            questions=stackOverflowService.findHotQuestions(nameList.get(i));
-//            System.out.println(nameList.get(i)+":");
-            for(Questions question:questions){
-                assertNotEquals(-1,question.getAnswers());
-                assertNotEquals(-1,question.getViews());
-                assertNotEquals(-1,question.getCreateDate());
-                assertNotEquals("",question.getName());
-//                System.out.println("AnswerId: "+question.getAnswers());
-//                System.out.println("ViewId: "+question.getViews());
-//                System.out.println("Name: "+question.getName());
-//                System.out.println("CreateDate: "+question.getCreateDate());
-            }
-        }
-
-    }
+//    @Test
+//    void findHotQuestions(){
+//        List<String> nameList=new ArrayList<>();
+//        nameList.add("java");
+//        nameList.add("python");
+//        nameList.add("c++");
+//        List<Questions> questions;
+//        for(int i=0;i<nameList.size();i++){
+//            questions=stackOverflowService.findHotQuestions(nameList.get(i));
+////            System.out.println(nameList.get(i)+":");
+//            for(Questions question:questions){
+//                assertNotEquals(-1,question.getAnswers());
+//                assertNotEquals(-1,question.getViews());
+//                assertNotEquals(-1,question.getCreateDate());
+//                assertNotEquals("",question.getName());
+////                System.out.println("AnswerId: "+question.getAnswers());
+////                System.out.println("ViewId: "+question.getViews());
+////                System.out.println("Name: "+question.getName());
+////                System.out.println("CreateDate: "+question.getCreateDate());
+//            }
+//        }
+//
+//    }
 
     @Test
     void findNodesFuzzy(){

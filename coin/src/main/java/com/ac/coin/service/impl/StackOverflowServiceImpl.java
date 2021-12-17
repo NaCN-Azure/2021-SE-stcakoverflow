@@ -77,8 +77,8 @@ public class StackOverflowServiceImpl implements StackOverflowService {
     }
 
     @Override
-    public List<Questions> findHotQuestions(String name) {
-        return stackOverflowDAO.findQuestions(name);
+    public List<Question> findHotQuestions(String name) {
+        return stackOverflowDAO.findQuestionsMongo(name);
     }
 
     @Override

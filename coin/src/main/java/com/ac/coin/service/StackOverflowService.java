@@ -1,5 +1,6 @@
 package com.ac.coin.service;
 
+import com.ac.coin.po.Question;
 import com.ac.coin.po.Questions;
 import com.ac.coin.po.tagTrend;
 import com.ac.coin.po.Tags;
@@ -18,6 +19,6 @@ public interface StackOverflowService {
     List<NodeVO> findTargetSubTag(String name);
     List<RelationVO> findTargetSubRelation(String name);
     tagTrend findTargetNodesChart(String name);
-    List<Questions> findHotQuestions(String name);
+    List<Question> findHotQuestions(String name);
     List<String> findNodesFuzzy(String name);
 }

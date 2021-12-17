@@ -1,13 +1,8 @@
 package com.ac.coin.dao.impl;
 
 import com.ac.coin.dao.StackOverflowDAO;
-import com.ac.coin.dao.repository.ChartRepository;
-import com.ac.coin.dao.repository.QuesRepository;
-import com.ac.coin.dao.repository.StackRepository;
-import com.ac.coin.dao.repository.TagsRepository;
-import com.ac.coin.po.Questions;
-import com.ac.coin.po.tagTrend;
-import com.ac.coin.po.Tags;
+import com.ac.coin.dao.repository.*;
+import com.ac.coin.po.*;
 import org.neo4j.driver.internal.value.RelationshipValue;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -31,6 +26,9 @@ public class StackOverflowDAOImpl implements StackOverflowDAO {
 
     @Autowired
     ChartRepository chartRepository;
+
+    @Autowired
+    QuestionRepository questionRepository;
 
     private List<Tags> findYears(int year){
         if(year==0){
@@ -129,6 +127,38 @@ public class StackOverflowDAOImpl implements StackOverflowDAO {
         Collections.sort(list, new Comparator<Map.Entry<Questions, Double>>() {
             @Override
             public int compare(Map.Entry<Questions, Double> o1, Map.Entry<Questions, Double> o2) {
+                return o1.getValue().compareTo(o2.getValue());
+            }
+        });
+        int x= Math.min(list.size()-1, 4);
+        for(int i=0;i<=x;i++){
+            results.add(list.get(i).getKey());
+        }
+        return results;
+    }
+
+    @Override
+    public List<Question> findQuestionsMongo(String name) {
+        tag2Question tag2question = questionRepository.findByTagName(name);
+        List<Question> results = new ArrayList<>();
+        if(tag2question==null){
+            return results;
+        }
+        HashMap<Question,Double> hashMap = new HashMap<>();
+        for(Question q: tag2question.getQuestions()){
+            int view = Integer.parseInt(q.getViews());
+            int answers = Integer.parseInt(q.getAnswers());
+            int votes = Integer.parseInt(q.getVotes());
+            int year = 2021;
+            int create = q.getCreate_date();
+            Double rate =  ((Math.log10(view))*4+answers*votes/5)/(Math.pow((double) (year+create)/2,1.5));
+            hashMap.put(q,rate);
+        }
+
+        List<Map.Entry<Question,Double>> list = new ArrayList<>(hashMap.entrySet());
+        Collections.sort(list, new Comparator<Map.Entry<Question, Double>>() {
+            @Override
+            public int compare(Map.Entry<Question, Double> o1, Map.Entry<Question, Double> o2) {
                 return o1.getValue().compareTo(o2.getValue());
             }
         });

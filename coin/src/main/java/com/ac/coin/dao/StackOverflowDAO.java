@@ -22,6 +22,8 @@ public interface StackOverflowDAO{
 
     List<Questions> findQuestions(String name);
 
+    List<Question> findQuestionsMongo(String name);
+
     List<String> findNodesFuzzy(String name);
 
 }
