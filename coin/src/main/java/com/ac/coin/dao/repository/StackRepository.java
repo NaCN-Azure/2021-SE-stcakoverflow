@@ -17,10 +17,30 @@ public interface StackRepository extends Neo4jRepository<contains,Long> {
     @Query("match (n:Tags)-[r:contains]->(m) where id(n)=$FatherId and exists(r.count) return r order by toInt(r.count) DESC limit 10")
     List<RelationshipValue> findRelatedHottestSubTags(@Param("FatherId") Long FatherId);
 
+    @Query("match (n:Tags)-[r:contains]->(m) where id(n)=$FatherId and exists(r.count_2015) return r order by toInt(r.count_2015) DESC limit 10")
+    List<RelationshipValue> findRelatedHottestSubTags2015(@Param("FatherId") Long FatherId);
+
+    @Query("match (n:Tags)-[r:contains]->(m) where id(n)=$FatherId and exists(r.count_2016) return r order by toInt(r.count_2016) DESC limit 10")
+    List<RelationshipValue> findRelatedHottestSubTags2016(@Param("FatherId") Long FatherId);
+
+    @Query("match (n:Tags)-[r:contains]->(m) where id(n)=$FatherId and exists(r.count_2017) return r order by toInt(r.count_2017) DESC limit 10")
+    List<RelationshipValue> findRelatedHottestSubTags2017(@Param("FatherId") Long FatherId);
+
+    @Query("match (n:Tags)-[r:contains]->(m) where id(n)=$FatherId and exists(r.count_2018) return r order by toInt(r.count_2018) DESC limit 10")
+    List<RelationshipValue> findRelatedHottestSubTags2018(@Param("FatherId") Long FatherId);
+
+    @Query("match (n:Tags)-[r:contains]->(m) where id(n)=$FatherId and exists(r.count_2019) return r order by toInt(r.count_2019) DESC limit 10")
+    List<RelationshipValue> findRelatedHottestSubTags2019(@Param("FatherId") Long FatherId);
+
+    @Query("match (n:Tags)-[r:contains]->(m) where id(n)=$FatherId and exists(r.count_2020) return r order by toInt(r.count_2020) DESC limit 10")
+    List<RelationshipValue> findRelatedHottestSubTags2020(@Param("FatherId") Long FatherId);
+
+    @Query("match (n:Tags)-[r:contains]->(m) where id(n)=$FatherId and exists(r.count_2021) return r order by toInt(r.count_2021) DESC limit 10")
+    List<RelationshipValue> findRelatedHottestSubTags2021(@Param("FatherId") Long FatherId);
+
+
     @Query("match (n:Tags)-[r:contains]->(m) where id(n)=$FatherId return r")
     List<RelationshipValue> findTargetRelatedSubTags(@Param("FatherId") Long FatherId);
-//
-//    @Query("match (n:Tags)-[r:contains]->(m) where id(n)=$FatherId and exists(m.count_$year) return r order by toInt(m.count_$year) DESC limit 5")
-//    List<RelationshipValue> findRelatedHottestSubTagsByYear(@Param("FatherId") Long FatherId,@Param("year")int year);
+
 
 }

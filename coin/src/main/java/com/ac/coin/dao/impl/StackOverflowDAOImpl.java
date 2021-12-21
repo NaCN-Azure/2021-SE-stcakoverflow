@@ -59,13 +59,69 @@ public class StackOverflowDAOImpl implements StackOverflowDAO {
 
     }
 
+    private List<Tags> findYearsSubTags(Long id,int year){
+        if(year==0){
+            return tagsRepository.findRelatedHottestSubTags(id);
+        }
+        else if(year==2015){
+            return tagsRepository.findRelatedHottestSubTags2015(id);
+        }
+        else if(year==2016){
+            return tagsRepository.findRelatedHottestSubTags2016(id);
+        }
+        else if(year==2017){
+            return tagsRepository.findRelatedHottestSubTags2017(id);
+        }
+        else if(year==2018){
+            return tagsRepository.findRelatedHottestSubTags2018(id);
+        }
+        else if(year==2019){
+            return tagsRepository.findRelatedHottestSubTags2019(id);
+        }
+        else if(year==2020){
+            return tagsRepository.findRelatedHottestSubTags2020(id);
+        }
+        else if(year==2021){
+            return tagsRepository.findRelatedHottestSubTags2021(id);
+        }
+        return tagsRepository.findRelatedHottestSubTags(id);
+    }
+
+    private List<RelationshipValue> findYearSubRelation(Long id,int year){
+        if(year==0){
+            return stackRepository.findRelatedHottestSubTags(id);
+        }
+        else if(year==2015){
+            return stackRepository.findRelatedHottestSubTags2015(id);
+        }
+        else if(year==2016){
+            return stackRepository.findRelatedHottestSubTags2016(id);
+        }
+        else if(year==2017){
+            return stackRepository.findRelatedHottestSubTags2017(id);
+        }
+        else if(year==2018){
+            return stackRepository.findRelatedHottestSubTags2018(id);
+        }
+        else if(year==2019){
+            return stackRepository.findRelatedHottestSubTags2019(id);
+        }
+        else if(year==2020){
+            return stackRepository.findRelatedHottestSubTags2020(id);
+        }
+        else if(year==2021){
+            return stackRepository.findRelatedHottestSubTags2021(id);
+        }
+        return stackRepository.findRelatedHottestSubTags(id);
+    }
+
     @Override
     public List<Tags> findHottestTags(int year){
         List<Tags> result = new ArrayList<>();
         List<Tags> tags=findYears(year);
         result.addAll(tags);
         for(Tags t:tags){
-            List<Tags> subTags=tagsRepository.findRelatedHottestSubTags(t.getId());
+            List<Tags> subTags=findYearsSubTags(t.getId(),year);
             result.addAll(subTags);
         }
         return result;
@@ -76,7 +132,7 @@ public class StackOverflowDAOImpl implements StackOverflowDAO {
         List<RelationshipValue> result = new ArrayList<>();
         List<Tags> tags=findYears(year);
         for(Tags t:tags){
-            List<RelationshipValue> subTags=stackRepository.findRelatedHottestSubTags(t.getId());
+            List<RelationshipValue> subTags=findYearSubRelation(t.getId(),year);
             result.addAll(subTags);
         }
         return result;
