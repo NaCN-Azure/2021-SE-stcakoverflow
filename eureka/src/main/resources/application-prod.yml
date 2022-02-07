@@ -1,7 +1,7 @@
 eureka:
   instance:
     #注册ip
-    hostname: 121.5.118.248
+    hostname: #####.248
     prefer-ip-address: true
   client:
     #禁止自己当做服务注册
