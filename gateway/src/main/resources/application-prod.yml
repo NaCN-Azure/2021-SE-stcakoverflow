@@ -2,7 +2,7 @@ eureka:
   client:
     serviceUrl:
       #服务注册地址
-      defaultZone: http://121.5.118.248:5555/eureka/
+      defaultZone: http://#####:5555/eureka/
   instance:
     prefer-ip-address: true
 
