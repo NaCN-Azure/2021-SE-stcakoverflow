@@ -1,12 +1,12 @@
 spring:
   neo4j:
-    uri: bolt://106.15.93.81:7687
+    uri: bolt://####:7687
     authentication:
-      username: neo4j
-      password: 123456
+      username: ###
+      password: ###
   data:
     mongodb:
-      host: 106.15.93.81
+      host: ###
       port: 27017
       database: scrapy
       username: scrapy
